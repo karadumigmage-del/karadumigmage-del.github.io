@@ -3,815 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>National Explorer - Adaptive English Assessment</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>National Explorer - English Assessment</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
-        
+        :root {
+            --ng-yellow: #FFCC00;
+            --ng-dark: #121212;
+            --ng-gray: #2A2A2A;
+            --ng-text: #FFFFFF;
+        }
         body {
-            font-family: 'Prompt', sans-serif;
-            background-color: #111111;
-            color: #f4f4f4;
-            background-image: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.85)), url('https://images.unsplash.com/photo-1542224566-6e85f2e6772f?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--ng-dark);
+            color: var(--ng-text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-
-        .natgeo-border {
-            border: 4px solid #FFCC00;
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--ng-gray);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+            border-top: 5px solid var(--ng-yellow);
         }
-
-        .glass-panel {
-            background: rgba(15, 15, 15, 0.90);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 204, 0, 0.15);
+        h1, h2, h3 { text-align: center; }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-
-        .btn-option {
-            transition: all 0.2s ease-in-out;
-            border-left: 4px solid transparent;
+        .yellow-box {
+            width: 30px;
+            height: 40px;
+            background-color: var(--ng-yellow);
         }
-
-        .btn-option:hover {
-            background-color: rgba(255, 204, 0, 0.15);
-            border-left: 4px solid #FFCC00;
-            transform: translateX(5px);
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background-color: #1e1e1e;
+            color: white;
+            box-sizing: border-box;
         }
-
-        .timer-warning {
-            color: #ef4444;
-            animation: pulse-red 1s infinite;
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--ng-yellow);
+            color: var(--ng-dark);
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.2s;
         }
-
-        @keyframes pulse-red {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
+        button:hover { background-color: #e6b800; }
+        button.secondary {
+            background-color: transparent;
+            color: var(--ng-yellow);
+            border: 2px solid var(--ng-yellow);
         }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 4px; }
+        button.secondary:hover { background-color: rgba(255, 204, 0, 0.1); }
+        button.danger {
+            background-color: #cc0000;
+            color: white;
+            border: none;
+        }
+        button.danger:hover { background-color: #990000; }
         
-        .spinner {
-            border: 4px solid rgba(255, 204, 0, 0.2);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: #FFCC00;
-            animation: spin 1s linear infinite;
+        .hidden { display: none !important; }
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #1e1e1e;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
-        
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .option-btn {
+            background-color: #1e1e1e;
+            color: white;
+            border: 1px solid #444;
+            text-align: left;
+            padding: 15px;
+            font-weight: normal;
+        }
+        .option-btn:hover { background-color: #333; }
+        .option-btn.selected {
+            background-color: rgba(255, 204, 0, 0.2);
+            border-color: var(--ng-yellow);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th { color: var(--ng-yellow); }
     </style>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
-<body class="flex flex-col min-h-screen p-2 md:p-6">
+<body>
 
-    <div id="app" class="w-full max-w-4xl mx-auto glass-panel natgeo-border rounded-lg shadow-[0_0_40px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden relative min-h-[650px]">
-        
-        <header class="bg-black text-white p-4 flex justify-between items-center border-b border-[#FFCC00]/20 z-10">
-            <div class="flex items-center">
-                <div class="w-6 h-8 bg-[#FFCC00] mr-3"></div>
-                <div>
-                    <h1 class="text-lg md:text-2xl font-bold tracking-widest uppercase">National Explorer</h1>
-                    <p class="text-[10px] md:text-xs text-[#FFCC00] uppercase tracking-wide">English Proficiency Assessment</p>
-                </div>
-            </div>
-            <div id="global-timer-container" class="hidden text-right bg-gray-900 px-3 py-1 rounded border border-gray-700">
-                <span class="text-[10px] text-gray-400 block uppercase">Time Remaining</span>
-                <span id="timer-display" class="text-lg md:text-xl font-bold font-mono text-white">15:00</span>
-            </div>
-        </header>
-
-        <main class="flex-grow flex flex-col p-4 md:p-8 relative w-full h-full">
-            
-            <!-- Welcome Screen -->
-            <div id="screen-welcome" class="flex flex-col items-center justify-center flex-grow text-center w-full">
-                <i class="fas fa-globe-americas text-6xl text-[#FFCC00] mb-6 drop-shadow-lg"></i>
-                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white">แบบทดสอบวัดระดับภาษาอังกฤษ<br><span class="text-[#FFCC00] text-xl">(Adaptive Test)</span></h2>
-                
-                <div class="bg-black/50 p-5 rounded-lg text-left max-w-2xl mx-auto mb-6 border border-gray-800 space-y-3 w-full shadow-lg">
-                    <p class="text-gray-300 text-sm md:text-base"><i class="fas fa-info-circle text-[#FFCC00] w-5"></i> แบบทดสอบ <strong>40 ข้อ</strong> (ปรับความยากอัตโนมัติ A1-B2) แบ่งเป็น 3 ส่วน:</p>
-                    <ul class="list-none space-y-2 text-sm text-gray-400 ml-5">
-                        <li><span class="text-white font-semibold">Part 1:</span> Vocabulary & Grammar (15 นาที)</li>
-                        <li><span class="text-white font-semibold">Part 2:</span> Conversations (15 นาที)</li>
-                        <li><span class="text-white font-semibold">Part 3:</span> Listening (เปิดเสียงอุปกรณ์ 15 นาที)</li>
-                    </ul>
-                </div>
-
-                <div id="auth-loading" class="flex flex-col items-center my-4">
-                    <div class="spinner mb-2"></div>
-                    <p class="text-sm text-[#FFCC00]">กำลังเชื่อมต่อฐานข้อมูล...</p>
-                </div>
-
-                <div id="user-entry-form" class="w-full max-w-sm mx-auto mb-8 hidden flex-col items-center">
-                    <input class="shadow-inner appearance-none border-2 border-gray-700 bg-gray-900 rounded-lg w-full py-3 px-4 text-white leading-tight focus:outline-none focus:border-[#FFCC00] mb-4 text-center text-lg placeholder-gray-500" id="nickname" type="text" placeholder="ใส่ชื่อเล่นของคุณที่นี่">
-                    
-                    <div class="flex flex-col gap-3 w-full justify-center">
-                        <button onclick="startTestFlow()" class="bg-[#FFCC00] hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-lg transition duration-300 text-lg uppercase tracking-wider shadow-[0_0_15px_rgba(255,204,0,0.3)] w-full">
-                            เริ่มทำข้อสอบ
-                        </button>
-                        
-                        <button onclick="showHistory()" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 text-sm w-full flex items-center justify-center mt-2">
-                            <i class="fas fa-trophy mr-2 text-[#FFCC00]"></i> ดู Leaderboard (ประวัติผู้เล่น)
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- History/Leaderboard Screen -->
-            <div id="screen-history" class="hidden flex-col items-center flex-grow w-full max-w-4xl mx-auto">
-                <div class="flex justify-between items-center w-full mb-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-[#FFCC00] uppercase tracking-widest"><i class="fas fa-crown mr-2"></i> Global Leaderboard</h2>
-                    <button onclick="backToWelcome()" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-bold py-2 px-4 rounded text-sm transition flex items-center">
-                        <i class="fas fa-arrow-left mr-2"></i> หน้าแรก
-                    </button>
-                </div>
-                
-                <div class="w-full bg-black/80 border border-gray-800 rounded-lg overflow-hidden shadow-lg flex-grow flex flex-col">
-                    <div class="overflow-y-auto max-h-[400px] w-full" id="history-table-container">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-gray-900/80 text-gray-400 text-xs md:text-sm uppercase tracking-wide">
-                                    <th class="p-3 md:p-4 border-b border-gray-700 font-semibold">ชื่อผู้เล่น</th>
-                                    <th class="p-3 md:p-4 border-b border-gray-700 font-semibold hidden sm:table-cell">วันที่ / เวลา</th>
-                                    <th class="p-3 md:p-4 border-b border-gray-700 text-center font-semibold">คะแนน</th>
-                                    <th class="p-3 md:p-4 border-b border-gray-700 text-center font-semibold">ระดับ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-tbody" class="text-sm">
-                                <tr><td colspan="4" class="p-8 text-center text-gray-500">กำลังโหลดข้อมูล...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transition Screen -->
-            <div id="screen-transition" class="hidden flex-col items-center justify-center flex-grow text-center">
-                <div class="w-16 h-16 border-4 border-[#FFCC00] border-t-transparent rounded-full animate-spin mb-6"></div>
-                <h2 id="transition-title" class="text-3xl font-bold text-[#FFCC00] mb-2 uppercase tracking-widest">Part 1</h2>
-                <h3 id="transition-subtitle" class="text-xl text-white mb-6">Vocabulary & Grammar</h3>
-                <button onclick="beginPart()" class="bg-[#FFCC00] hover:bg-yellow-500 text-black font-bold py-3 px-10 rounded-lg transition duration-300 uppercase shadow-lg">
-                    เริ่มทำ Part นี้
-                </button>
-            </div>
-
-            <!-- Quiz Screen -->
-            <div id="screen-quiz" class="hidden flex-col flex-grow w-full max-w-3xl mx-auto">
-                <div class="flex justify-between items-end mb-4 border-b border-gray-700 pb-2">
-                    <div>
-                        <span class="text-[#FFCC00] font-bold text-xl">Q <span id="q-num">1</span></span>
-                        <span class="text-gray-500 text-sm">/ <span id="q-total">14</span></span>
-                        <span id="part-indicator" class="ml-2 px-2 py-1 bg-gray-800 text-[10px] rounded text-gray-300 uppercase">Part 1</span>
-                    </div>
-                    <div class="text-right">
-                        <span id="level-badge" class="px-2 py-1 bg-blue-900/50 text-blue-300 border border-blue-700 rounded text-xs font-bold tracking-widest">Level A2</span>
-                        <div class="text-[10px] text-gray-500 mt-1 uppercase" id="points-indicator">2 Points</div>
-                    </div>
-                </div>
-
-                <div class="flex-grow flex flex-col py-2">
-                    <div id="audio-ui" class="hidden text-center mb-4">
-                        <div class="bg-gray-900/80 p-4 rounded-lg border border-gray-700 inline-block w-full max-w-md shadow-md">
-                            <button onclick="playListeningAudio()" id="btn-play-audio" class="bg-[#FFCC00] text-black font-bold py-2 px-6 rounded-full hover:bg-yellow-500 transition shadow-md flex items-center justify-center mx-auto w-full">
-                                <i class="fas fa-play mr-2"></i> เล่นเสียง (Play Audio)
-                            </button>
-                        </div>
-                    </div>
-
-                    <h3 id="question-text" class="text-lg md:text-xl font-medium text-white leading-relaxed mb-6 whitespace-pre-line text-center md:text-left bg-gray-900/50 p-5 rounded-lg border border-gray-800 shadow-inner min-h-[80px] flex items-center justify-center md:justify-start"></h3>
-
-                    <div id="options-container" class="space-y-3 mt-auto mb-6"></div>
-
-                    <!-- End Test Early Button to ensure users can save their score anytime -->
-                    <div class="mt-auto pt-4 border-t border-gray-800 text-center">
-                        <button onclick="promptForceEndTest()" class="text-sm text-red-400 hover:text-red-300 transition flex items-center justify-center mx-auto opacity-80 hover:opacity-100 bg-red-900/20 px-4 py-2 rounded-lg border border-red-900/50">
-                            <i class="fas fa-stop-circle mr-2"></i> จบการทดสอบและบันทึกคะแนน (Save Score)
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Result Screen -->
-            <div id="screen-result" class="hidden flex-col items-center flex-grow w-full max-w-3xl mx-auto py-4">
-                <div class="text-center mb-6">
-                    <h2 class="text-2xl md:text-3xl font-bold text-white uppercase tracking-widest">Assessment Complete</h2>
-                    <p class="text-[#FFCC00] mt-1 text-sm"><i class="fas fa-check-circle mr-1"></i> บันทึกคะแนนลงระบบ Leaderboard เรียบร้อยแล้ว</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-6">
-                    <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-center flex flex-col justify-center shadow-lg">
-                        <span class="text-gray-400 uppercase text-[10px] font-bold tracking-widest mb-1">Total Score</span>
-                        <div class="text-5xl md:text-6xl font-black text-white" id="final-score">0</div>
-                    </div>
-                    
-                    <div class="bg-[#FFCC00] text-black p-6 rounded-lg text-center flex flex-col justify-center shadow-[0_0_25px_rgba(255,204,0,0.2)]">
-                        <span class="uppercase text-[10px] font-bold tracking-widest mb-1 opacity-80">CEFR Level</span>
-                        <div class="text-5xl md:text-6xl font-black" id="final-cefr">A2</div>
-                        <span class="text-xs mt-2 font-semibold" id="cefr-desc">Basic User</span>
-                    </div>
-                </div>
-
-                <div class="w-full bg-gray-900 border border-gray-800 p-5 rounded-lg mb-6 shadow-lg">
-                    <h4 class="font-bold text-[#FFCC00] mb-3 uppercase tracking-widest text-xs border-b border-gray-800 pb-2"><i class="fas fa-chart-bar mr-2"></i> Skill Breakdown</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4" id="skills-breakdown"></div>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-3 w-full">
-                    <button onclick="location.reload()" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-bold py-3 px-6 rounded-lg transition shadow-md flex-1 text-sm">
-                        <i class="fas fa-redo mr-2"></i> ทำแบบทดสอบใหม่
-                    </button>
-                    <button onclick="showHistoryFromResult()" class="bg-[#FFCC00] hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-lg transition shadow-[0_0_15px_rgba(255,204,0,0.3)] flex-1 text-sm">
-                        <i class="fas fa-list-ol mr-2"></i> ดูตารางคะแนน (Leaderboard)
-                    </button>
-                </div>
-            </div>
-        </main>
+<div class="container" id="login-screen">
+    <div class="header-logo">
+        <div class="yellow-box"></div>
+        <h2>NATIONAL EXPLORER</h2>
     </div>
+    <h3 style="margin-top: 0;">English Proficiency Assessment</h3>
+    <p style="text-align: center; font-size: 14px; color: #aaa;">Enter your nickname to begin the adaptive test.</p>
+    <input type="text" id="nickname-input" placeholder="Your Nickname / ชื่อเล่น" autocomplete="off">
+    <button onclick="login()">Start Assessment</button>
+    <button class="secondary" onclick="showLeaderboard()">View Leaderboard</button>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+<div class="container hidden" id="quiz-screen">
+    <div class="info-bar">
+        <span id="player-name-display"></span>
+        <span id="part-display">Part: 1/3</span>
+        <span id="timer-display" style="color: var(--ng-yellow); font-weight: bold;">15:00</span>
+    </div>
+    
+    <div id="question-area">
+        <p id="question-type" style="font-size: 12px; color: #aaa; text-transform: uppercase; margin-bottom: 5px;"></p>
+        <h3 id="question-text" style="margin-top: 0; line-height: 1.4;">Question loads here...</h3>
+        <button id="play-audio-btn" class="secondary hidden" style="width: auto; padding: 5px 15px; margin-bottom: 15px;">🔊 Play Audio</button>
+        <div class="options-container" id="options-area"></div>
+    </div>
+    
+    <button id="next-btn" onclick="submitAnswer()" disabled style="background-color: #555; color: #888; cursor: not-allowed;">Confirm & Next</button>
+    <button class="danger" onclick="confirmEarlyExit()" style="margin-top: 20px; font-size: 12px; padding: 10px;">End Test & Save Score</button>
+</div>
 
-        // Strictly use provided variables for collaborative persistence
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'natgeo-test-v4';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+<div class="container hidden" id="result-screen">
+    <div class="header-logo">
+        <div class="yellow-box"></div>
+        <h2>ASSESSMENT COMPLETE</h2>
+    </div>
+    <div style="text-align: center;">
+        <h1 style="color: var(--ng-yellow); font-size: 48px; margin: 10px 0;" id="final-score">0</h1>
+        <p>Total Points</p>
+        <h2 id="cefr-level" style="margin-bottom: 5px;">Level: --</h2>
+        <p id="cefr-desc" style="color: #aaa; font-size: 14px; margin-bottom: 30px;"></p>
+    </div>
+    <button onclick="showLeaderboard()">View Global Leaderboard</button>
+    <button class="secondary" onclick="location.reload()">Return Home</button>
+</div>
 
-        let app, db, auth;
-        let isDbReady = false;
+<div class="container hidden" id="leaderboard-screen">
+    <div class="header-logo">
+        <div class="yellow-box"></div>
+        <h2>GLOBAL LEADERBOARD</h2>
+    </div>
+    <div style="max-height: 300px; overflow-y: auto;">
+        <table id="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Level</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <tr><td colspan="4" style="text-align: center;">Loading data...</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <button style="margin-top: 20px;" onclick="location.reload()">Back to Home</button>
+</div>
 
-        async function initAuth() {
-            if (!firebaseConfig) {
-                console.warn("No Firebase config detected. Scores will not be saved to cloud.");
-                showEntryForm();
-                return;
-            }
-            try {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                
-                // MANDATORY Auth before queries
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                
-                isDbReady = true;
-                showEntryForm();
-            } catch (e) {
-                console.error("Firebase init failed:", e);
-                showEntryForm(); 
-            }
+<script>
+    // ==========================================
+    // 1. นำค่า config จาก Firebase ของคุณมาใส่ตรงนี้
+    // ==========================================
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT_ID.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.database();
+
+    // ==========================================
+    // 2. Question Database (40 Questions total)
+    // ==========================================
+    const questionsDb = [
+        // A1 Level
+        { level: 'A1', type: 'grammar', q: "The sun ___ in the east.", opts: ["rise", "rises", "rising", "rose"], ans: 1 },
+        { level: 'A1', type: 'vocab', q: "A ___ is an animal with a long neck.", opts: ["lion", "elephant", "giraffe", "bear"], ans: 2 },
+        { level: 'A1', type: 'conversation', q: "A: How are you? \nB: ___", opts: ["I am fine, thank you.", "I am John.", "Yes, please.", "See you tomorrow."], ans: 0 },
+        { level: 'A1', type: 'listening', q: "What color is the sky on a clear day?", opts: ["Green", "Blue", "Red", "Yellow"], ans: 1 },
+        { level: 'A1', type: 'grammar', q: "I ___ a student.", opts: ["is", "am", "are", "be"], ans: 1 },
+        { level: 'A1', type: 'vocab', q: "We use our ___ to see.", opts: ["ears", "eyes", "nose", "hands"], ans: 1 },
+        { level: 'A1', type: 'conversation', q: "A: What is your name? \nB: ___", opts: ["I am fine.", "My name is Sarah.", "I am 20 years old.", "I live here."], ans: 1 },
+        { level: 'A1', type: 'listening', q: "I have a pet dog. It likes to play.", opts: ["Cat", "Dog", "Bird", "Fish"], ans: 1 },
+        { level: 'A1', type: 'grammar', q: "They ___ playing football.", opts: ["is", "am", "are", "do"], ans: 2 },
+        { level: 'A1', type: 'vocab', q: "An apple is a type of ___.", opts: ["vegetable", "meat", "fruit", "drink"], ans: 2 },
+        
+        // A2 Level
+        { level: 'A2', type: 'grammar', q: "She ___ to the zoo yesterday.", opts: ["goes", "went", "gone", "going"], ans: 1 },
+        { level: 'A2', type: 'vocab', q: "The Amazon is a very long ___.", opts: ["mountain", "river", "desert", "forest"], ans: 1 },
+        { level: 'A2', type: 'conversation', q: "A: What time does the tour start? \nB: ___", opts: ["It's in the park.", "At 9:00 AM.", "Yes, it starts.", "I like tours."], ans: 1 },
+        { level: 'A2', type: 'listening', q: "The weather today is very cold and snowy.", opts: ["Hot and sunny", "Rainy", "Cold and snowy", "Windy"], ans: 2 },
+        { level: 'A2', type: 'grammar', q: "I have ___ been to Africa.", opts: ["ever", "never", "always", "sometimes"], ans: 1 },
+        { level: 'A2', type: 'vocab', q: "Penguins live in a very cold ___.", opts: ["environment", "city", "desert", "jungle"], ans: 0 },
+        { level: 'A2', type: 'conversation', q: "A: Would you like some water? \nB: ___", opts: ["No, I don't.", "Yes, please.", "Water is good.", "I like water."], ans: 1 },
+        { level: 'A2', type: 'listening', q: "Please turn off your phones during the movie.", opts: ["Turn on phones", "Turn off phones", "Use phones", "Call friends"], ans: 1 },
+        { level: 'A2', type: 'grammar', q: "If it rains, we ___ stay home.", opts: ["would", "will", "did", "are"], ans: 1 },
+        { level: 'A2', type: 'vocab', q: "A person who studies stars is an ___.", opts: ["astronomer", "doctor", "teacher", "farmer"], ans: 0 },
+
+        // B1 Level
+        { level: 'B1', type: 'grammar', q: "By the time we arrived, the expedition ___ already left.", opts: ["has", "have", "had", "was"], ans: 2 },
+        { level: 'B1', type: 'vocab', q: "Many species are facing ___ due to habitat loss.", opts: ["extinction", "evolution", "creation", "population"], ans: 0 },
+        { level: 'B1', type: 'conversation', q: "A: I think we should take the trail on the left. \nB: ___", opts: ["I couldn't agree more.", "I don't think.", "Yes, left is.", "No, trail."], ans: 0 },
+        { level: 'B1', type: 'listening', q: "The documentary highlights the impact of climate change on polar bears.", opts: ["City life", "Climate change", "Cooking", "Space"], ans: 1 },
+        { level: 'B1', type: 'grammar', q: "He is used to ___ in cold weather.", opts: ["work", "working", "worked", "works"], ans: 1 },
+        { level: 'B1', type: 'vocab', q: "The scientist conducted an ___ to test the theory.", opts: ["experience", "experiment", "expert", "expect"], ans: 1 },
+        { level: 'B1', type: 'conversation', q: "A: Do you mind if I open the window? \nB: ___", opts: ["Yes, please do.", "No, not at all.", "I open window.", "Mind is okay."], ans: 1 },
+        { level: 'B1', type: 'listening', q: "The museum exhibits artifacts from ancient Egypt.", opts: ["Modern art", "Ancient Egypt", "Future technology", "Dinosaurs"], ans: 1 },
+        { level: 'B1', type: 'grammar', q: "The book, ___ was written in 1920, is a classic.", opts: ["who", "which", "that", "where"], ans: 1 },
+        { level: 'B1', type: 'vocab', q: "We need to ___ our natural resources.", opts: ["consume", "conserve", "destroy", "pollute"], ans: 1 },
+
+        // B2 Level
+        { level: 'B2', type: 'grammar', q: "Had I known about the storm, I ___ have planned the hike.", opts: ["won't", "wouldn't", "didn't", "haven't"], ans: 1 },
+        { level: 'B2', type: 'vocab', q: "The melting glaciers are a ___ consequence of global warming.", opts: ["trivial", "profound", "negligible", "dubious"], ans: 1 },
+        { level: 'B2', type: 'conversation', q: "A: The new policy seems rather draconian, doesn't it? \nB: ___", opts: ["Indeed, it leaves little room for flexibility.", "Yes, dragons are scary.", "I think policy is new.", "No, draconian."], ans: 0 },
+        { level: 'B2', type: 'listening', q: "The phenomenon of bioluminescence is prevalent among deep-sea organisms.", opts: ["Deep-sea organisms", "Forest animals", "Desert plants", "Birds"], ans: 0 },
+        { level: 'B2', type: 'grammar', q: "Scarcely ___ the tent when the downpour began.", opts: ["we had pitched", "had we pitched", "did we pitch", "we pitched"], ans: 1 },
+        { level: 'B2', type: 'vocab', q: "The researcher provided ___ evidence to support her hypothesis.", opts: ["flimsy", "anecdotal", "compelling", "irrelevant"], ans: 2 },
+        { level: 'B2', type: 'conversation', q: "A: What's your take on the renewable energy initiative? \nB: ___", opts: ["I take energy.", "It's a step in the right direction, albeit costly.", "Renewable is good.", "Initiative is take."], ans: 1 },
+        { level: 'B2', type: 'listening', q: "The tectonic plates shift imperceptibly over millennia.", opts: ["Quickly", "Imperceptibly", "Loudly", "Visibly"], ans: 1 },
+        { level: 'B2', type: 'grammar', q: "He speaks Spanish as though he ___ a native speaker.", opts: ["is", "was", "were", "has been"], ans: 2 },
+        { level: 'B2', type: 'vocab', q: "The ecosystem is highly ___ to invasive species.", opts: ["resistant", "immune", "susceptible", "indifferent"], ans: 2 }
+    ];
+
+    // ==========================================
+    // 3. Game State & Logic
+    // ==========================================
+    let player = "";
+    let score = 0;
+    let questionCount = 0;
+    const maxQuestions = 40;
+    let currentLevel = 'A2'; // Start level
+    let availableQuestions = [];
+    let currentQuestionData = null;
+    let selectedOptionIndex = null;
+    
+    // Timer states
+    let currentPart = 1; // 1 to 3
+    let timeRemaining = 15 * 60; // 15 minutes per part
+    let timerInterval = null;
+
+    // Point mapping
+    const levelPoints = { 'A1': 1, 'A2': 2, 'B1': 3, 'B2': 4 };
+
+    // Deep copy pool to manage used questions
+    function resetPool() {
+        availableQuestions = JSON.parse(JSON.stringify(questionsDb));
+    }
+
+    function login() {
+        const nameInput = document.getElementById('nickname-input').value.trim();
+        if (nameInput === "") {
+            alert("Please enter a nickname.");
+            return;
         }
+        player = nameInput;
+        document.getElementById('player-name-display').innerText = `Explorer: ${player}`;
+        
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        
+        resetPool();
+        score = 0;
+        questionCount = 0;
+        currentPart = 1;
+        startPartTimer();
+        loadNextQuestion();
+    }
 
-        function showEntryForm() {
-            document.getElementById('auth-loading').classList.add('hidden');
-            document.getElementById('user-entry-form').classList.remove('hidden');
-            document.getElementById('user-entry-form').classList.add('flex');
-        }
-
-        // Expose database functions to window so normal scripts can use them
-        window.saveResultToDb = async function(nickname, score, level) {
-            if (!isDbReady || !auth.currentUser) return false;
-            try {
-                // Strict path required by rules
-                const resultsRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
-                await addDoc(resultsRef, {
-                    nickname: nickname,
-                    score: parseInt(score),
-                    level: level,
-                    timestamp: new Date().toISOString()
-                });
-                return true;
-            } catch (e) {
-                console.error("Error saving result to DB:", e);
-                return false;
-            }
-        };
-
-        window.fetchHistoryFromDb = async function() {
-            if (!isDbReady || !auth.currentUser) return null;
-            try {
-                // Strict path required by rules
-                const resultsRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
-                
-                // RULE: No complex queries. Fetch all and sort in memory.
-                const snapshot = await getDocs(resultsRef);
-                let history = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    if(data.nickname && data.score !== undefined) {
-                        history.push(data);
-                    }
-                });
-                
-                // Sort by score descending, then by timestamp descending
-                history.sort((a, b) => {
-                    if (b.score !== a.score) return b.score - a.score;
-                    return new Date(b.timestamp) - new Date(a.timestamp);
-                }); 
-                
-                return history;
-            } catch (e) {
-                console.error("Error fetching leaderboard:", e);
-                return null;
-            }
-        };
-
-        // Initialize Firebase when page loads
-        initAuth();
-    </script>
-
-    <script>
-        // Database structured for adaptive fetching
-        const dbQuestions = {
-            1: { // Vocab & Grammar
-                A1: [
-                    { q: "The earth ____ round.", opts: ["is", "are", "am", "be"], a: 0, cat: "Grammar" },
-                    { q: "Elephants ____ big ears.", opts: ["has", "have", "having", "is"], a: 1, cat: "Grammar" },
-                    { q: "A bird flies in the ____.", opts: ["water", "ground", "sky", "tree"], a: 2, cat: "Vocabulary" },
-                    { q: "We need ____ to survive.", opts: ["water", "rock", "sand", "plastic"], a: 0, cat: "Vocabulary" },
-                    { q: "Cats like to eat ____.", opts: ["grass", "metal", "fish", "wood"], a: 2, cat: "Vocabulary" }
-                ],
-                A2: [
-                    { q: "Mount Everest is ____ than K2.", opts: ["high", "higher", "highest", "more high"], a: 1, cat: "Grammar" },
-                    { q: "Penguins live in a very cold ____.", opts: ["environment", "room", "city", "desert"], a: 0, cat: "Vocabulary" },
-                    { q: "I have lived here ____ 10 years.", opts: ["since", "for", "in", "at"], a: 1, cat: "Grammar" },
-                    { q: "Animals are losing their natural ____.", opts: ["habitats", "habits", "homes", "houses"], a: 0, cat: "Vocabulary" },
-                    { q: "A compass shows you the ____.", opts: ["time", "weather", "direction", "temperature"], a: 2, cat: "Vocabulary" }
-                ],
-                B1: [
-                    { q: "If we don't act now, many species ____ extinct.", opts: ["become", "became", "will become", "have become"], a: 2, cat: "Grammar" },
-                    { q: "Deforestation is a major threat to global ____.", opts: ["diversity", "biodiversity", "biology", "botany"], a: 1, cat: "Vocabulary" },
-                    { q: "Solar panels are a source of ____ energy.", opts: ["fossil", "exhaustible", "renewable", "nuclear"], a: 2, cat: "Vocabulary" },
-                    { q: "I wish I ____ more about marine biology.", opts: ["know", "knew", "have known", "knowing"], a: 1, cat: "Grammar" },
-                    { q: "Air ____ in big cities causes breathing problems.", opts: ["pollution", "solution", "evolution", "revolution"], a: 0, cat: "Vocabulary" }
-                ],
-                B2: [
-                    { q: "Scarcely ____ the shelter when the blizzard struck.", opts: ["they had reached", "did they reach", "had they reached", "they reach"], a: 2, cat: "Grammar" },
-                    { q: "The melting ice caps will lead to a dire ____.", opts: ["consequence", "coincidence", "circumstance", "convenience"], a: 0, cat: "Vocabulary" },
-                    { q: "____ the severe weather, the team pressed on.", opts: ["Although", "Despite", "However", "Because of"], a: 1, cat: "Grammar" },
-                    { q: "Efforts to ____ the endangered population are yielding results.", opts: ["exploit", "deplete", "rehabilitate", "eradicate"], a: 2, cat: "Vocabulary" },
-                    { q: "The fragile ecosystem ____ by invasive species.", opts: ["has been degraded", "was degrading", "had degraded", "degrades"], a: 0, cat: "Grammar" }
-                ]
-            },
-            2: { // Conversations
-                 A1: [
-                    { q: "A: How is the weather?\nB: ____", opts: ["It is raining.", "It is blue.", "It is a tree.", "I am fine."], a: 0, cat: "Conversation" },
-                    { q: "A: What animal is that?\nB: ____ a zebra.", opts: ["This", "Its", "It's", "He's"], a: 2, cat: "Conversation" },
-                    { q: "A: Look at the mountain!\nB: Wow, it is very ____.", opts: ["small", "short", "tall", "fast"], a: 2, cat: "Conversation" },
-                    { q: "A: Can birds fly?\nB: Yes, they ____.", opts: ["can", "do", "are", "have"], a: 0, cat: "Conversation" }
-                 ],
-                 A2: [
-                    { q: "A: Have you ever seen a whale?\nB: Yes, I ____.", opts: ["did", "saw", "have", "do"], a: 2, cat: "Conversation" },
-                    { q: "A: Why are you wearing a jacket?\nB: Because the wind is ____.", opts: ["blowing", "raining", "snowing", "sunny"], a: 0, cat: "Conversation" },
-                    { q: "A: Shall we pitch the tent here?\nB: No, the ground is too ____.", opts: ["soft", "wet", "sunny", "tall"], a: 1, cat: "Conversation" },
-                    { q: "A: Was the cave dark?\nB: Yes, we used our ____.", opts: ["phones", "sunglasses", "flashlights", "maps"], a: 2, cat: "Conversation" }
-                 ],
-                 B1: [
-                    { q: "A: I think we should ban single-use plastics.\nB: I completely ____ with you.", opts: ["accept", "agree", "allow", "approve"], a: 1, cat: "Conversation" },
-                    { q: "A: Look at this strange insect!\nB: Be careful, it ____ be poisonous.", opts: ["can't", "won't", "might", "shall"], a: 2, cat: "Conversation" },
-                    { q: "A: The deforestation rates are alarming.\nB: Yes, something must be ____ about it.", opts: ["do", "did", "done", "doing"], a: 2, cat: "Conversation" },
-                    { q: "A: I'm worried about the storm.\nB: Don't worry, the tent is designed to ____ high winds.", opts: ["withstand", "prevent", "support", "overcome"], a: 0, cat: "Conversation" }
-                 ],
-                 B2: [
-                    { q: "A: The documentary implies climate change is irreversible.\nB: I wouldn't go ____ far.", opts: ["that", "so", "as", "too"], a: 0, cat: "Conversation" },
-                    { q: "A: It's vital that the funding ____ secured immediately.\nB: I've spoken to the board.", opts: ["is", "be", "was", "has"], a: 1, cat: "Conversation" },
-                    { q: "A: Do you think solar energy will replace fossil fuels?\nB: Yes, but it won't happen ____ overnight.", opts: ["exactly", "literally", "strictly", "necessarily"], a: 1, cat: "Conversation" },
-                    { q: "A: The sheer diversity in the Amazon is mind-boggling.\nB: It makes its destruction all the more ____.", opts: ["tragic", "ironic", "pathetic", "comic"], a: 0, cat: "Conversation" }
-                 ]
-            },
-            3: { // Listening
-                 A1: [
-                    { audio: "The bear is sleeping in the cave.", q: "Where is the bear?", opts: ["In the tree", "In the river", "In the cave", "In the zoo"], a: 2, cat: "Listening" },
-                    { audio: "I see three red birds in the sky.", q: "How many birds are there?", opts: ["Two", "Three", "Four", "Five"], a: 1, cat: "Listening" },
-                    { audio: "The monkey is eating a yellow banana.", q: "What is the monkey eating?", opts: ["An apple", "A banana", "A leaf", "A bug"], a: 1, cat: "Listening" },
-                    { audio: "Lions eat meat, not grass.", q: "What do lions eat?", opts: ["Grass", "Meat", "Fruits", "Leaves"], a: 1, cat: "Listening" }
-                 ],
-                 A2: [
-                    { audio: "The sea turtle lays eggs in the warm sand.", q: "Where does the turtle lay eggs?", opts: ["Ocean water", "Rocks", "Sand", "Grass"], a: 2, cat: "Listening" },
-                    { audio: "A cheetah can run fast, but only for a short time.", q: "What is true about the cheetah?", opts: ["Runs slowly", "Runs fast for a long time", "Runs fast for a short time", "Never stops"], a: 2, cat: "Listening" },
-                    { audio: "Camels store fat in their humps.", q: "What do camels store in their humps?", opts: ["Water", "Sand", "Fat", "Milk"], a: 2, cat: "Listening" },
-                    { audio: "We need to set up the tent before it gets dark.", q: "When do they need to set up the tent?", opts: ["After dinner", "Before it gets dark", "In the morning", "Next week"], a: 1, cat: "Listening" }
-                 ],
-                 B1: [
-                    { audio: "Deforestation is causing a rapid loss of biodiversity.", q: "What causes biodiversity loss?", opts: ["Pollution", "Climate change", "Deforestation", "Hunting"], a: 2, cat: "Listening" },
-                    { audio: "Solar energy is a renewable resource because the sun will shine for billions of years.", q: "Why is solar energy renewable?", opts: ["It is cheap", "Sun shines for billions of years", "No pollution", "Easy to store"], a: 1, cat: "Listening" },
-                    { audio: "Corals are tiny animals called polyps.", q: "What are corals?", opts: ["Underwater plants", "Colorful rocks", "Tiny animals called polyps", "Dead shells"], a: 2, cat: "Listening" },
-                    { audio: "Volcanic ash grounded flights for a week.", q: "What caused flights to be grounded?", opts: ["Hurricane", "Pilot strike", "Volcanic ash", "Snowfall"], a: 2, cat: "Listening" }
-                 ],
-                 B2: [
-                    { audio: "Geologists hypothesize the tectonic shift occurred earlier than assumed.", q: "What is the new hypothesis?", opts: ["Happens soon", "Occurred later", "Occurred earlier than assumed", "Continuous"], a: 2, cat: "Listening" },
-                    { audio: "Permafrost melting threatens to release vast quantities of methane.", q: "What is the primary concern?", opts: ["Loss of habitat", "Flooding", "Release of methane", "Decreased fertility"], a: 2, cat: "Listening" },
-                    { audio: "Ocean acidification, driven by excess carbon dioxide, threatens corals.", q: "What drives ocean acidification?", opts: ["Chemical spills", "Excess carbon dioxide", "Rising temperatures", "Overfishing"], a: 1, cat: "Listening" },
-                    { audio: "Conservation must prioritize keystone species to avoid ecosystem collapse.", q: "Why prioritize keystone species?", opts: ["Most beautiful", "Easiest to breed", "Removal causes collapse", "Endangered"], a: 2, cat: "Listening" }
-                 ]
-            }
-        };
-    </script>
-
-    <script>
-        const PARTS = [
-            { id: 1, name: "Vocabulary & Grammar", total: 14, timeLimit: 900, category: "Vocab/Grammar" },
-            { id: 2, name: "Conversations", total: 13, timeLimit: 900, category: "Conversation" },
-            { id: 3, name: "Listening Comprehension", total: 13, timeLimit: 900, category: "Listening" }
-        ];
-
-        const LEVELS = ["A1", "A2", "B1", "B2"];
-        const POINTS = { A1: 1, A2: 2, B1: 3, B2: 4 };
-        const LEVEL_COLORS = { 
-            A1: "bg-green-900/50 text-green-300 border-green-700", 
-            A2: "bg-blue-900/50 text-blue-300 border-blue-700", 
-            B1: "bg-purple-900/50 text-purple-300 border-purple-700", 
-            B2: "bg-red-900/50 text-red-300 border-red-700" 
-        };
-
-        let state = {
-            nickname: "",
-            currentPartIndex: 0,
-            questionIndexInPart: 0,
-            currentLevelIndex: 1,
-            totalScore: 0,
-            timerInterval: null,
-            timeRemaining: 0,
-            stats: {
-                "Vocabulary": { correct: 0, total: 0 },
-                "Grammar": { correct: 0, total: 0 },
-                "Conversation": { correct: 0, total: 0 },
-                "Listening": { correct: 0, total: 0 }
-            },
-            usedQuestions: { 1: [], 2: [], 3: [] },
-            currentQuestion: null,
-            testEnded: false
-        };
-
-        let synth = window.speechSynthesis;
-
-        // Secure Custom Modal Replacement for alert()/confirm()
-        function showModal(msg, isConfirm = false, onConfirm = null) {
-            const modal = document.createElement('div');
-            modal.className = "fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm";
+    function startPartTimer() {
+        clearInterval(timerInterval);
+        timeRemaining = 15 * 60; // 15 mins
+        document.getElementById('part-display').innerText = `Part: ${currentPart}/3`;
+        
+        timerInterval = setInterval(() => {
+            timeRemaining--;
+            let mins = Math.floor(timeRemaining / 60);
+            let secs = timeRemaining % 60;
+            document.getElementById('timer-display').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
             
-            let buttonsHtml = '';
-            if(isConfirm) {
-                buttonsHtml = `
-                    <div class="flex gap-3 justify-center mt-6">
-                        <button id="modal-confirm" class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-500 transition shadow-md w-full">ยืนยันจบ (Confirm)</button>
-                        <button id="modal-cancel" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition shadow-md w-full">ยกเลิก (Cancel)</button>
-                    </div>
-                `;
-            } else {
-                buttonsHtml = `<button id="modal-ok" class="bg-[#FFCC00] text-black font-bold py-2 px-8 rounded-lg hover:bg-yellow-500 transition shadow-md mt-6">ตกลง (OK)</button>`;
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                alert(`Time is up for Part ${currentPart}!`);
+                handlePartTransition();
             }
+        }, 1000);
+    }
 
-            modal.innerHTML = `
-                <div class="bg-gray-900 border border-gray-700 rounded-xl p-6 max-w-sm w-full text-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-                    <i class="${isConfirm ? 'fas fa-exclamation-triangle text-red-500' : 'fas fa-info-circle text-[#FFCC00]'} text-4xl mb-4"></i>
-                    <p class="text-white text-sm md:text-base leading-relaxed">${msg}</p>
-                    ${buttonsHtml}
-                </div>
-            `;
-            document.body.appendChild(modal);
-
-            if(isConfirm) {
-                document.getElementById('modal-confirm').onclick = () => { modal.remove(); if(onConfirm) onConfirm(); };
-                document.getElementById('modal-cancel').onclick = () => { modal.remove(); };
-            } else {
-                document.getElementById('modal-ok').onclick = () => { modal.remove(); };
-            }
-        }
-
-        // Leaderboard Logic
-        async function showHistory() {
-            document.getElementById('screen-welcome').classList.add('hidden');
-            document.getElementById('screen-history').classList.remove('hidden');
-            document.getElementById('screen-history').classList.add('flex');
-            
-            const tbody = document.getElementById('history-tbody');
-            tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-[#FFCC00]"><div class="spinner mx-auto mb-3"></div>กำลังโหลดข้อมูล...</td></tr>';
-            
-            if (typeof window.fetchHistoryFromDb === 'function') {
-                const history = await window.fetchHistoryFromDb();
-                if (history === null) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-red-400">Database connection error. Run on supported platform.</td></tr>';
-                } else {
-                    renderHistoryTable(history);
-                }
-            } else {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-red-400">Firebase module not loaded.</td></tr>';
-            }
-        }
-
-        function showHistoryFromResult() {
-            document.getElementById('screen-result').classList.add('hidden');
-            showHistory(); 
-        }
-
-        function backToWelcome() {
-            document.getElementById('screen-history').classList.add('hidden');
-            document.getElementById('screen-history').classList.remove('flex');
-            document.getElementById('screen-welcome').classList.remove('hidden');
-        }
-
-        function renderHistoryTable(history) {
-            const tbody = document.getElementById('history-tbody');
-            tbody.innerHTML = '';
-            
-            if (!history || history.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-400">ยังไม่มีข้อมูลผู้เล่นในระบบ<br>ทำข้อสอบและกดบันทึกคะแนนเป็นคนแรกเลย!</td></tr>';
-                return;
-            }
-
-            history.forEach((entry, index) => {
-                const dateObj = new Date(entry.timestamp);
-                const dateStr = dateObj.toLocaleDateString('th-TH', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
-                
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-800 transition duration-150 border-b border-gray-800 last:border-0";
-                
-                let badgeClass = "bg-gray-700 text-gray-300";
-                if(entry.level === "A1") badgeClass = "bg-green-900/50 text-green-400 border-green-700";
-                if(entry.level === "A2") badgeClass = "bg-blue-900/50 text-blue-400 border-blue-700";
-                if(entry.level === "B1") badgeClass = "bg-purple-900/50 text-purple-400 border-purple-700";
-                if(entry.level === "B2" || entry.level === "C1") badgeClass = "bg-red-900/50 text-red-400 border-red-700";
-
-                let crown = "";
-                if(index === 0) crown = '<i class="fas fa-crown text-[#FFCC00] mr-2 drop-shadow-md"></i>';
-                else if(index === 1) crown = '<i class="fas fa-medal text-gray-400 mr-2"></i>';
-                else if(index === 2) crown = '<i class="fas fa-medal text-orange-400 mr-2"></i>';
-
-                tr.innerHTML = `
-                    <td class="p-3 md:p-4 font-medium text-white text-xs md:text-sm">${crown}${entry.nickname}</td>
-                    <td class="p-3 md:p-4 text-gray-400 text-[10px] md:text-xs hidden sm:table-cell">${dateStr}</td>
-                    <td class="p-3 md:p-4 text-center font-bold text-[#FFCC00] text-sm md:text-base">${entry.score}</td>
-                    <td class="p-3 md:p-4 text-center">
-                        <span class="px-2 py-1 rounded text-[10px] md:text-xs font-bold border ${badgeClass}">${entry.level}</span>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function startTestFlow() {
-            const nickInput = document.getElementById('nickname').value.trim();
-            if(!nickInput) { showModal('กรุณากรอกชื่อเล่นของคุณก่อนเริ่มทำแบบทดสอบ'); return; }
-            state.nickname = nickInput;
-            document.getElementById('screen-welcome').classList.add('hidden');
-            document.getElementById('global-timer-container').classList.remove('hidden');
-            prepareNextPart();
-        }
-
-        function prepareNextPart() {
-            if (state.currentPartIndex >= PARTS.length || state.testEnded) {
-                endTest();
-                return;
-            }
-            const part = PARTS[state.currentPartIndex];
-            state.questionIndexInPart = 0;
-            
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-transition').classList.remove('hidden');
-            document.getElementById('screen-transition').classList.add('flex');
-            
-            document.getElementById('transition-title').innerText = `Part ${part.id}`;
-            document.getElementById('transition-subtitle').innerText = part.name;
-        }
-
-        function beginPart() {
-            const part = PARTS[state.currentPartIndex];
-            document.getElementById('screen-transition').classList.remove('flex');
-            document.getElementById('screen-transition').classList.add('hidden');
-            document.getElementById('screen-quiz').classList.remove('hidden');
-            document.getElementById('screen-quiz').classList.add('flex');
-
-            state.timeRemaining = part.timeLimit;
-            updateTimerDisplay();
-            clearInterval(state.timerInterval);
-            state.timerInterval = setInterval(timerTick, 1000);
-
+    function handlePartTransition() {
+        if (currentPart >= 3) {
+            endQuiz();
+        } else {
+            currentPart++;
+            startPartTimer();
             loadNextQuestion();
         }
+    }
 
-        function timerTick() {
-            state.timeRemaining--;
-            updateTimerDisplay();
+    function getQuestionFromLevel(level) {
+        let pool = availableQuestions.filter(q => q.level === level);
+        if (pool.length > 0) {
+            let randomIndex = Math.floor(Math.random() * pool.length);
+            let q = pool[randomIndex];
+            // Remove from pool
+            let globalIndex = availableQuestions.findIndex(item => item.q === q.q);
+            if (globalIndex > -1) availableQuestions.splice(globalIndex, 1);
+            return q;
+        }
+        return null;
+    }
 
-            const timerDisp = document.getElementById('timer-display');
-            if (state.timeRemaining <= 60) timerDisp.classList.add('timer-warning');
-            else timerDisp.classList.remove('timer-warning');
+    function loadNextQuestion() {
+        if (questionCount >= maxQuestions) {
+            endQuiz();
+            return;
+        }
+        
+        // Check part transition based on question count (13, 13, 14 roughly)
+        if (questionCount === 13 && currentPart === 1) {
+            currentPart = 2; startPartTimer();
+        } else if (questionCount === 26 && currentPart === 2) {
+            currentPart = 3; startPartTimer();
+        }
 
-            if (state.timeRemaining <= 0) {
-                clearInterval(state.timerInterval);
-                synth.cancel();
-                state.currentPartIndex++;
-                prepareNextPart();
+        selectedOptionIndex = null;
+        let btn = document.getElementById('next-btn');
+        btn.disabled = true;
+        btn.style.backgroundColor = "#555";
+        btn.style.color = "#888";
+        btn.style.cursor = "not-allowed";
+
+        // FALLBACK MECHANISM: If current level runs out, find closest available level
+        currentQuestionData = getQuestionFromLevel(currentLevel);
+        if (!currentQuestionData) {
+            const levelsFallbackOrder = ['A2', 'B1', 'A1', 'B2'];
+            for (let lvl of levelsFallbackOrder) {
+                currentQuestionData = getQuestionFromLevel(lvl);
+                if (currentQuestionData) {
+                    currentLevel = lvl;
+                    break;
+                }
             }
         }
 
-        function updateTimerDisplay() {
-            const m = Math.floor(state.timeRemaining / 60).toString().padStart(2, '0');
-            const s = (state.timeRemaining % 60).toString().padStart(2, '0');
-            document.getElementById('timer-display').innerText = `${m}:${s}`;
+        if (!currentQuestionData) {
+            // Pool completely empty
+            endQuiz();
+            return;
         }
 
-        function playListeningAudio() {
-            if (!state.currentQuestion || !state.currentQuestion.audio) return;
-            synth.cancel();
+        renderQuestion();
+    }
 
-            const utterance = new SpeechSynthesisUtterance(state.currentQuestion.audio);
+    function renderQuestion() {
+        document.getElementById('question-type').innerText = `${currentQuestionData.type} - Level ${currentQuestionData.level} (Question ${questionCount + 1}/${maxQuestions})`;
+        document.getElementById('question-text').innerText = currentQuestionData.q;
+        
+        const audioBtn = document.getElementById('play-audio-btn');
+        if (currentQuestionData.type === 'listening') {
+            audioBtn.classList.remove('hidden');
+        } else {
+            audioBtn.classList.add('hidden');
+        }
+
+        const optArea = document.getElementById('options-area');
+        optArea.innerHTML = "";
+        
+        currentQuestionData.opts.forEach((optText, index) => {
+            let btn = document.createElement('button');
+            btn.className = "option-btn";
+            btn.innerText = optText;
+            btn.onclick = () => selectOption(index, btn);
+            optArea.appendChild(btn);
+        });
+    }
+
+    function selectOption(index, btnElement) {
+        selectedOptionIndex = index;
+        
+        let allBtns = document.querySelectorAll('.option-btn');
+        allBtns.forEach(b => b.classList.remove('selected'));
+        btnElement.classList.add('selected');
+        
+        let nextBtn = document.getElementById('next-btn');
+        nextBtn.disabled = false;
+        nextBtn.style.backgroundColor = "var(--ng-yellow)";
+        nextBtn.style.color = "var(--ng-dark)";
+        nextBtn.style.cursor = "pointer";
+    }
+
+    // Web Speech API for Listening part
+    document.getElementById('play-audio-btn').addEventListener('click', () => {
+        if (!currentQuestionData) return;
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(currentQuestionData.q);
             utterance.lang = 'en-US';
-            utterance.rate = 0.9; 
-            
-            const btn = document.getElementById('btn-play-audio');
-            utterance.onstart = () => {
-                btn.classList.add('bg-yellow-300', 'text-black');
-                btn.innerHTML = `<i class="fas fa-volume-up mr-2"></i> กำลังเล่นเสียง...`;
-            };
-            utterance.onend = () => {
-                btn.classList.remove('bg-yellow-300');
-                btn.innerHTML = `<i class="fas fa-play mr-2"></i> เล่นอีกครั้ง`;
-            };
-            synth.speak(utterance);
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("Your browser does not support text-to-speech.");
+        }
+    });
+
+    function submitAnswer() {
+        if (selectedOptionIndex === null) return;
+        
+        let isCorrect = (selectedOptionIndex === currentQuestionData.ans);
+        
+        if (isCorrect) {
+            score += levelPoints[currentLevel];
+            // Level Up logic
+            if (currentLevel === 'A1') currentLevel = 'A2';
+            else if (currentLevel === 'A2') currentLevel = 'B1';
+            else if (currentLevel === 'B1') currentLevel = 'B2';
+        } else {
+            // Level Down logic
+            if (currentLevel === 'B2') currentLevel = 'B1';
+            else if (currentLevel === 'B1') currentLevel = 'A2';
+            else if (currentLevel === 'A2') currentLevel = 'A1';
+        }
+        
+        questionCount++;
+        loadNextQuestion();
+    }
+
+    function confirmEarlyExit() {
+        if(confirm("Are you sure you want to end the test early and save your current score?")) {
+            endQuiz();
+        }
+    }
+
+    function endQuiz() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        
+        document.getElementById('final-score').innerText = score;
+        
+        // Max possible score theoretically if always B2 is 40 * 4 = 160.
+        let cefr = "A1";
+        let desc = "Foundation Level: Keep exploring and practicing basic English structures.";
+        
+        if (score >= 100) {
+            cefr = "B2"; desc = "Upper Intermediate: Excellent command of the language. Ready for global expeditions!";
+        } else if (score >= 60) {
+            cefr = "B1"; desc = "Intermediate: Solid understanding. You can navigate most situations independently.";
+        } else if (score >= 30) {
+            cefr = "A2"; desc = "Pre-Intermediate: Good progress. Focus on expanding vocabulary and complex grammar.";
+        }
+        
+        document.getElementById('cefr-level').innerText = `CEFR Level: ${cefr}`;
+        document.getElementById('cefr-desc').innerText = desc;
+        
+        saveScoreToDatabase(player, score, cefr);
+    }
+
+    // ==========================================
+    // 4. Firebase Database Functions
+    // ==========================================
+    function saveScoreToDatabase(playerName, finalScore, cefrLvl) {
+        // Prevent saving if db is not configured
+        if(firebaseConfig.apiKey === "YOUR_API_KEY") {
+            console.warn("Firebase is not configured. Score not saved to cloud.");
+            return;
         }
 
-        function loadNextQuestion() {
-            if(state.testEnded) return;
+        const dateStr = new Date().toLocaleString('th-TH');
+        db.ref('leaderboard/').push({
+            name: playerName,
+            score: finalScore,
+            level: cefrLvl,
+            date: dateStr
+        }).catch((error) => {
+            console.error("Error saving to Firebase:", error);
+        });
+    }
 
-            const part = PARTS[state.currentPartIndex];
-            if (state.questionIndexInPart >= part.total) {
-                clearInterval(state.timerInterval);
-                synth.cancel();
-                state.currentPartIndex++;
-                prepareNextPart();
-                return;
-            }
-
-            let currentLevel = LEVELS[state.currentLevelIndex];
-            const partId = part.id;
-            let pool = dbQuestions[partId][currentLevel];
-
-            let availableQs = pool.filter((_, idx) => !state.usedQuestions[partId].includes(`${currentLevel}-${idx}`));
-            
-            // Fallback if level questions are exhausted
-            if (availableQs.length === 0) {
-                const searchOrder = [[1,2,3], [0,2,3], [3,1,0], [2,1,0]][state.currentLevelIndex];
-                let found = false;
-                for (let fallbackIdx of searchOrder) {
-                    let fallbackLevel = LEVELS[fallbackIdx];
-                    let fallbackPool = dbQuestions[partId][fallbackLevel];
-                    let fallbackAvailable = fallbackPool.filter((_, idx) => !state.usedQuestions[partId].includes(`${fallbackLevel}-${idx}`));
-                    
-                    if (fallbackAvailable.length > 0) {
-                        state.currentLevelIndex = fallbackIdx; 
-                        currentLevel = fallbackLevel; pool = fallbackPool; availableQs = fallbackAvailable;
-                        found = true; break;
-                    }
-                }
-                if (!found) { state.usedQuestions[partId] = []; availableQs = pool; }
-            }
-
-            const randomQ = availableQs[Math.floor(Math.random() * availableQs.length)];
-            const randomIndex = pool.indexOf(randomQ);
-            
-            state.usedQuestions[partId].push(`${currentLevel}-${randomIndex}`);
-            state.currentQuestion = pool[randomIndex];
-            
-            renderQuestion();
+    function showLeaderboard() {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('leaderboard-screen').classList.remove('hidden');
+        
+        if(firebaseConfig.apiKey === "YOUR_API_KEY") {
+            document.getElementById('leaderboard-body').innerHTML = `<tr><td colspan="4" style="text-align: center; color: red;">Database not configured. Please add your Firebase keys.</td></tr>`;
+            return;
         }
 
-        function renderQuestion() {
-            const qData = state.currentQuestion;
-            const part = PARTS[state.currentPartIndex];
-            const currentLevel = LEVELS[state.currentLevelIndex];
-
-            document.getElementById('q-num').innerText = state.questionIndexInPart + 1;
-            document.getElementById('q-total').innerText = part.total;
-            document.getElementById('part-indicator').innerText = `Part ${part.id}`;
-            
-            const levelBadge = document.getElementById('level-badge');
-            levelBadge.className = `px-2 py-1 rounded text-[10px] font-bold tracking-widest border ${LEVEL_COLORS[currentLevel]}`;
-            levelBadge.innerText = `Lvl ${currentLevel}`;
-            document.getElementById('points-indicator').innerText = `+${POINTS[currentLevel]} Pts`;
-
-            const qText = document.getElementById('question-text');
-            const audioUi = document.getElementById('audio-ui');
-            const optsContainer = document.getElementById('options-container');
-            
-            audioUi.classList.add('hidden');
-            optsContainer.innerHTML = '';
-            synth.cancel();
-
-            if (part.id === 3) {
-                audioUi.classList.remove('hidden');
-                document.getElementById('btn-play-audio').innerHTML = `<i class="fas fa-play mr-2"></i> เล่นเสียง (Audio)`;
-                qText.innerText = qData.q;
-            } else if (part.id === 2) {
-                qText.innerHTML = qData.q.replace('\n', '<br><span class="block mt-2 text-[#FFCC00]"></span>');
+        const tbody = document.getElementById('leaderboard-body');
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">Loading data...</td></tr>`;
+        
+        db.ref('leaderboard/').orderByChild('score').once('value').then((snapshot) => {
+            if (snapshot.exists()) {
+                let dataArr = [];
+                snapshot.forEach((child) => {
+                    dataArr.push(child.val());
+                });
+                
+                // Sort descending by score
+                dataArr.sort((a, b) => b.score - a.score);
+                
+                tbody.innerHTML = "";
+                dataArr.forEach(row => {
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.name}</td>
+                        <td><strong>${row.score}</strong></td>
+                        <td>${row.level}</td>
+                        <td style="font-size: 12px; color: #aaa;">${row.date}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             } else {
-                qText.innerText = qData.q;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">No records found.</td></tr>`;
             }
+        }).catch(err => {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: red;">Error loading data.</td></tr>`;
+            console.error(err);
+        });
+    }
+</script>
 
-            qData.opts.forEach((optText, idx) => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left bg-gray-900/60 border border-gray-700 hover:border-[#FFCC00] p-4 rounded-lg text-white btn-option flex items-center shadow-md group";
-                const letter = String.fromCharCode(65 + idx);
-                btn.innerHTML = `
-                    <span class="inline-flex items-center justify-center min-w-[2rem] w-8 h-8 rounded bg-gray-800 text-[#FFCC00] font-bold mr-4 border border-gray-600 group-hover:bg-[#FFCC00] group-hover:text-black transition-colors">${letter}</span> 
-                    <span class="font-medium text-gray-300 group-hover:text-white text-sm md:text-base">${optText}</span>
-                `;
-                btn.onclick = () => handleAnswer(idx);
-                optsContainer.appendChild(btn);
-            });
-        }
-
-        function handleAnswer(selectedIndex) {
-            if(state.testEnded) return;
-            const qData = state.currentQuestion;
-            const isCorrect = (selectedIndex === qData.a);
-            const currentLevel = LEVELS[state.currentLevelIndex];
-
-            state.stats[qData.cat].total++;
-            
-            if (isCorrect) {
-                state.stats[qData.cat].correct++;
-                state.totalScore += POINTS[currentLevel];
-                if (state.currentLevelIndex < LEVELS.length - 1) state.currentLevelIndex++;
-            } else {
-                if (state.currentLevelIndex > 0) state.currentLevelIndex--;
-            }
-
-            state.questionIndexInPart++;
-            loadNextQuestion();
-        }
-
-        function promptForceEndTest() {
-            showModal(
-                "คุณต้องการจบการทดสอบและบันทึกคะแนนตอนนี้เลยหรือไม่?<br><span class='text-[10px] text-gray-400 mt-2 block'>*คะแนนจะถูกคำนวณและบันทึกลง Leaderboard ตามข้อที่คุณตอบไปแล้ว</span>", 
-                true, 
-                () => {
-                    state.testEnded = true;
-                    endTest();
-                }
-            );
-        }
-
-        async function endTest() {
-            state.testEnded = true;
-            clearInterval(state.timerInterval);
-            synth.cancel();
-            
-            document.getElementById('global-timer-container').classList.add('hidden');
-            document.getElementById('screen-quiz').classList.add('hidden');
-            document.getElementById('screen-transition').classList.add('hidden');
-            
-            const resultScreen = document.getElementById('screen-result');
-            resultScreen.classList.remove('hidden');
-            resultScreen.classList.add('flex');
-
-            document.getElementById('final-score').innerText = state.totalScore;
-
-            let cefr = "A1";
-            let desc = "Beginner";
-            if (state.totalScore >= 80) { cefr = "C1"; desc = "Advanced"; }
-            else if (state.totalScore >= 50) { cefr = "B2"; desc = "Upper Int."; }
-            else if (state.totalScore >= 25) { cefr = "B1"; desc = "Intermediate"; }
-            else if (state.totalScore >= 10) { cefr = "A2"; desc = "Elementary"; }
-
-            document.getElementById('final-cefr').innerText = cefr;
-            document.getElementById('cefr-desc').innerText = desc;
-
-            // Save to Firebase Leaderboard immediately
-            if (typeof window.saveResultToDb === 'function' && state.totalScore > 0) {
-                const saved = await window.saveResultToDb(state.nickname, state.totalScore, cefr);
-                if (!saved) {
-                    showModal("ไม่สามารถเชื่อมต่อฐานข้อมูลได้ คะแนนของคุณยังไม่ถูกบันทึก");
-                }
-            }
-
-            const breakdownContainer = document.getElementById('skills-breakdown');
-            breakdownContainer.innerHTML = '';
-            
-            for (const [skill, data] of Object.entries(state.stats)) {
-                let pct = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
-                breakdownContainer.innerHTML += `
-                    <div class="bg-gray-800 p-3 rounded-lg border border-gray-700">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-white font-bold text-xs">${skill}</span>
-                            <span class="text-[#FFCC00] text-xs">${data.correct} / ${data.total}</span>
-                        </div>
-                        <div class="w-full bg-black rounded-full h-1.5">
-                            <div class="bg-[#FFCC00] h-1.5 rounded-full" style="width: ${pct}%"></div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-    </script>
 </body>
 </html>
