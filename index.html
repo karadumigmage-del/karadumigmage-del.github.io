@@ -11,22 +11,22 @@
         
         body {
             font-family: 'Prompt', sans-serif;
-            background-color: #1a1a1a;
+            background-color: #111111;
             color: #f4f4f4;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1542224566-6e85f2e6772f?auto=format&fit=crop&w=1920&q=80');
+            background-image: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.85)), url('https://images.unsplash.com/photo-1542224566-6e85f2e6772f?auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
         .natgeo-border {
-            border: 6px solid #FFCC00;
+            border: 4px solid #FFCC00;
         }
 
         .glass-panel {
-            background: rgba(20, 20, 20, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 204, 0, 0.2);
+            background: rgba(15, 15, 15, 0.90);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 204, 0, 0.15);
         }
 
         .btn-option {
@@ -51,22 +51,12 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .pulse-audio {
-            animation: pulse-audio 1.5s infinite;
-        }
-        
-        @keyframes pulse-audio {
-            0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 204, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); }
-        }
-
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1a1a1a; }
         ::-webkit-scrollbar-thumb { background: #FFCC00; border-radius: 4px; }
         
         .spinner {
-            border: 4px solid rgba(255, 204, 0, 0.3);
+            border: 4px solid rgba(255, 204, 0, 0.2);
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -77,81 +67,78 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="flex flex-col min-h-screen p-4 md:p-8">
+<body class="flex flex-col min-h-screen p-2 md:p-6">
 
-    <div id="app" class="w-full max-w-4xl mx-auto glass-panel natgeo-border rounded-lg shadow-2xl flex flex-col overflow-hidden relative min-h-[650px]">
+    <div id="app" class="w-full max-w-4xl mx-auto glass-panel natgeo-border rounded-lg shadow-[0_0_40px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden relative min-h-[650px]">
         
-        <header class="bg-black text-white p-4 flex justify-between items-center border-b border-[#FFCC00]/30 z-10">
+        <header class="bg-black text-white p-4 flex justify-between items-center border-b border-[#FFCC00]/20 z-10">
             <div class="flex items-center">
-                <div class="w-8 h-10 bg-[#FFCC00] mr-3"></div>
+                <div class="w-6 h-8 bg-[#FFCC00] mr-3"></div>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-bold tracking-widest uppercase">National Explorer</h1>
-                    <p class="text-xs text-[#FFCC00] uppercase tracking-wide">English Proficiency Assessment</p>
+                    <h1 class="text-lg md:text-2xl font-bold tracking-widest uppercase">National Explorer</h1>
+                    <p class="text-[10px] md:text-xs text-[#FFCC00] uppercase tracking-wide">English Proficiency Assessment</p>
                 </div>
             </div>
-            <div id="global-timer-container" class="hidden text-right bg-gray-900 px-4 py-2 rounded border border-gray-700">
-                <span class="text-xs text-gray-400 block uppercase">Time Remaining</span>
-                <span id="timer-display" class="text-xl md:text-2xl font-bold font-mono">15:00</span>
+            <div id="global-timer-container" class="hidden text-right bg-gray-900 px-3 py-1 rounded border border-gray-700">
+                <span class="text-[10px] text-gray-400 block uppercase">Time Remaining</span>
+                <span id="timer-display" class="text-lg md:text-xl font-bold font-mono text-white">15:00</span>
             </div>
         </header>
 
-        <main class="flex-grow flex flex-col p-6 md:p-8 relative w-full h-full">
+        <main class="flex-grow flex flex-col p-4 md:p-8 relative w-full h-full">
             
             <!-- Welcome Screen -->
             <div id="screen-welcome" class="flex flex-col items-center justify-center flex-grow text-center w-full">
-                <i class="fas fa-compass text-6xl text-[#FFCC00] mb-6 drop-shadow-lg"></i>
-                <h2 class="text-3xl font-bold mb-4 text-white">แบบทดสอบวัดระดับภาษาอังกฤษ<br>(Adaptive Test)</h2>
+                <i class="fas fa-globe-americas text-6xl text-[#FFCC00] mb-6 drop-shadow-lg"></i>
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white">แบบทดสอบวัดระดับภาษาอังกฤษ<br><span class="text-[#FFCC00] text-xl">(Adaptive Test)</span></h2>
                 
-                <div class="bg-black/60 p-6 rounded-lg text-left max-w-2xl mx-auto mb-6 border border-gray-800 space-y-4 w-full shadow-lg">
-                    <p class="text-gray-300"><i class="fas fa-info-circle text-[#FFCC00] w-6"></i> แบบทดสอบมี <strong>40 ข้อ</strong> แบ่งเป็น 3 ส่วน (Part)</p>
-                    <ul class="list-none space-y-2 text-sm text-gray-400 ml-6">
-                        <li><span class="text-white font-semibold">Part 1:</span> Vocabulary & Grammar (14 ข้อ) - จำกัดเวลา 15 นาที</li>
-                        <li><span class="text-white font-semibold">Part 2:</span> Conversations (13 ข้อ) - จำกัดเวลา 15 นาที</li>
-                        <li><span class="text-white font-semibold">Part 3:</span> Listening (13 ข้อ) - เปิดเสียงอุปกรณ์ จำกัดเวลา 15 นาที</li>
+                <div class="bg-black/50 p-5 rounded-lg text-left max-w-2xl mx-auto mb-6 border border-gray-800 space-y-3 w-full shadow-lg">
+                    <p class="text-gray-300 text-sm md:text-base"><i class="fas fa-info-circle text-[#FFCC00] w-5"></i> แบบทดสอบ <strong>40 ข้อ</strong> (ปรับความยากอัตโนมัติ A1-B2) แบ่งเป็น 3 ส่วน:</p>
+                    <ul class="list-none space-y-2 text-sm text-gray-400 ml-5">
+                        <li><span class="text-white font-semibold">Part 1:</span> Vocabulary & Grammar (15 นาที)</li>
+                        <li><span class="text-white font-semibold">Part 2:</span> Conversations (15 นาที)</li>
+                        <li><span class="text-white font-semibold">Part 3:</span> Listening (เปิดเสียงอุปกรณ์ 15 นาที)</li>
                     </ul>
                 </div>
 
-                <!-- Auth/Loading State -->
                 <div id="auth-loading" class="flex flex-col items-center my-4">
                     <div class="spinner mb-2"></div>
-                    <p class="text-sm text-gray-400">กำลังเชื่อมต่อระบบฐานข้อมูล...</p>
+                    <p class="text-sm text-[#FFCC00]">กำลังเชื่อมต่อฐานข้อมูล...</p>
                 </div>
 
                 <div id="user-entry-form" class="w-full max-w-sm mx-auto mb-8 hidden flex-col items-center">
-                    <label class="block text-gray-300 text-sm font-bold mb-2 text-left w-full" for="nickname">
-                        กรุณากรอกชื่อเล่นของคุณ (Nickname)
-                    </label>
-                    <input class="shadow appearance-none border border-gray-700 bg-gray-900 rounded w-full py-3 px-4 text-white leading-tight focus:outline-none focus:border-[#FFCC00] mb-4 text-center text-lg" id="nickname" type="text" placeholder="ชื่อเล่นของคุณ">
+                    <input class="shadow-inner appearance-none border-2 border-gray-700 bg-gray-900 rounded-lg w-full py-3 px-4 text-white leading-tight focus:outline-none focus:border-[#FFCC00] mb-4 text-center text-lg placeholder-gray-500" id="nickname" type="text" placeholder="ใส่ชื่อเล่นของคุณที่นี่">
                     
-                    <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
-                        <button onclick="startTestFlow()" class="bg-[#FFCC00] hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded transition duration-300 text-lg uppercase tracking-wider shadow-[0_0_15px_rgba(255,204,0,0.4)] flex-1">
+                    <div class="flex flex-col gap-3 w-full justify-center">
+                        <button onclick="startTestFlow()" class="bg-[#FFCC00] hover:bg-yellow-500 text-black font-bold py-3 px-8 rounded-lg transition duration-300 text-lg uppercase tracking-wider shadow-[0_0_15px_rgba(255,204,0,0.3)] w-full">
                             เริ่มทำข้อสอบ
                         </button>
-                        <button onclick="showHistory()" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded transition duration-300 text-sm flex items-center justify-center">
-                            <i class="fas fa-trophy mr-2"></i> Leaderboard
+                        
+                        <button onclick="showHistory()" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 text-sm w-full flex items-center justify-center mt-2">
+                            <i class="fas fa-trophy mr-2 text-[#FFCC00]"></i> ดู Leaderboard (ประวัติผู้เล่น)
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- History Screen -->
+            <!-- History/Leaderboard Screen -->
             <div id="screen-history" class="hidden flex-col items-center flex-grow w-full max-w-4xl mx-auto">
                 <div class="flex justify-between items-center w-full mb-6">
-                    <h2 class="text-2xl font-bold text-[#FFCC00] uppercase tracking-widest"><i class="fas fa-trophy mr-2"></i> ประวัติผลการทดสอบ</h2>
-                    <button onclick="backToWelcome()" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-sm transition">
-                        <i class="fas fa-arrow-left mr-1"></i> กลับหน้าแรก
+                    <h2 class="text-xl md:text-2xl font-bold text-[#FFCC00] uppercase tracking-widest"><i class="fas fa-crown mr-2"></i> Global Leaderboard</h2>
+                    <button onclick="backToWelcome()" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-bold py-2 px-4 rounded text-sm transition flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i> หน้าแรก
                     </button>
                 </div>
                 
-                <div class="w-full bg-black/60 border border-gray-800 rounded-lg overflow-hidden shadow-lg flex-grow flex flex-col">
+                <div class="w-full bg-black/80 border border-gray-800 rounded-lg overflow-hidden shadow-lg flex-grow flex flex-col">
                     <div class="overflow-y-auto max-h-[400px] w-full" id="history-table-container">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="bg-gray-900 text-gray-400 text-sm uppercase tracking-wide">
-                                    <th class="p-4 border-b border-gray-700">ชื่อผู้เล่น (Name)</th>
-                                    <th class="p-4 border-b border-gray-700">วันที่ / เวลา</th>
-                                    <th class="p-4 border-b border-gray-700 text-center">คะแนน</th>
-                                    <th class="p-4 border-b border-gray-700 text-center">ระดับ (CEFR)</th>
+                                <tr class="bg-gray-900/80 text-gray-400 text-xs md:text-sm uppercase tracking-wide">
+                                    <th class="p-3 md:p-4 border-b border-gray-700 font-semibold">ชื่อผู้เล่น</th>
+                                    <th class="p-3 md:p-4 border-b border-gray-700 font-semibold hidden sm:table-cell">วันที่ / เวลา</th>
+                                    <th class="p-3 md:p-4 border-b border-gray-700 text-center font-semibold">คะแนน</th>
+                                    <th class="p-3 md:p-4 border-b border-gray-700 text-center font-semibold">ระดับ</th>
                                 </tr>
                             </thead>
                             <tbody id="history-tbody" class="text-sm">
@@ -167,8 +154,7 @@
                 <div class="w-16 h-16 border-4 border-[#FFCC00] border-t-transparent rounded-full animate-spin mb-6"></div>
                 <h2 id="transition-title" class="text-3xl font-bold text-[#FFCC00] mb-2 uppercase tracking-widest">Part 1</h2>
                 <h3 id="transition-subtitle" class="text-xl text-white mb-6">Vocabulary & Grammar</h3>
-                <p class="text-gray-400 mb-8 max-w-md">คุณมีเวลา 15 นาที สำหรับส่วนนี้ ระบบจะจับเวลาเมื่อคุณกดปุ่มด้านล่าง</p>
-                <button onclick="beginPart()" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-10 rounded transition duration-300 uppercase">
+                <button onclick="beginPart()" class="bg-[#FFCC00] hover:bg-yellow-500 text-black font-bold py-3 px-10 rounded-lg transition duration-300 uppercase shadow-lg">
                     เริ่มทำ Part นี้
                 </button>
             </div>
@@ -179,29 +165,32 @@
                     <div>
                         <span class="text-[#FFCC00] font-bold text-xl">Q <span id="q-num">1</span></span>
                         <span class="text-gray-500 text-sm">/ <span id="q-total">14</span></span>
-                        <span id="part-indicator" class="ml-3 px-2 py-1 bg-gray-800 text-xs rounded text-gray-300">Part 1</span>
+                        <span id="part-indicator" class="ml-2 px-2 py-1 bg-gray-800 text-[10px] rounded text-gray-300 uppercase">Part 1</span>
                     </div>
                     <div class="text-right">
-                        <span id="level-badge" class="px-3 py-1 bg-blue-900/50 text-blue-300 border border-blue-700 rounded text-sm font-bold tracking-widest">Level A2</span>
+                        <span id="level-badge" class="px-2 py-1 bg-blue-900/50 text-blue-300 border border-blue-700 rounded text-xs font-bold tracking-widest">Level A2</span>
                         <div class="text-[10px] text-gray-500 mt-1 uppercase" id="points-indicator">2 Points</div>
                     </div>
                 </div>
 
                 <div class="flex-grow flex flex-col py-2">
-                    <div id="audio-ui" class="hidden text-center mb-6">
-                        <div class="bg-black/60 p-5 rounded-lg border border-gray-800 inline-block w-full max-w-md shadow-lg">
-                            <i class="fas fa-headphones text-4xl text-[#FFCC00] mb-4 block"></i>
-                            <button onclick="playListeningAudio()" id="btn-play-audio" class="bg-[#FFCC00] text-black font-bold py-3 px-8 rounded-full hover:bg-yellow-500 transition shadow-[0_0_15px_rgba(255,204,0,0.4)] flex items-center justify-center mx-auto w-full">
+                    <div id="audio-ui" class="hidden text-center mb-4">
+                        <div class="bg-gray-900/80 p-4 rounded-lg border border-gray-700 inline-block w-full max-w-md shadow-md">
+                            <button onclick="playListeningAudio()" id="btn-play-audio" class="bg-[#FFCC00] text-black font-bold py-2 px-6 rounded-full hover:bg-yellow-500 transition shadow-md flex items-center justify-center mx-auto w-full">
                                 <i class="fas fa-play mr-2"></i> เล่นเสียง (Play Audio)
                             </button>
-                            <p class="text-xs text-gray-400 mt-3">* คุณสามารถกดฟังซ้ำได้</p>
                         </div>
                     </div>
 
-                    <h3 id="question-text" class="text-lg md:text-xl font-medium text-white leading-relaxed mb-6 whitespace-pre-line text-center md:text-left bg-gray-900/50 p-4 rounded border border-gray-800"></h3>
+                    <h3 id="question-text" class="text-lg md:text-xl font-medium text-white leading-relaxed mb-6 whitespace-pre-line text-center md:text-left bg-gray-900/50 p-5 rounded-lg border border-gray-800 shadow-inner min-h-[80px] flex items-center justify-center md:justify-start"></h3>
 
-                    <div id="options-container" class="space-y-3 mt-auto">
-                        <!-- Choices will inject here safely -->
+                    <div id="options-container" class="space-y-3 mt-auto mb-6"></div>
+
+                    <!-- End Test Early Button to ensure users can save their score anytime -->
+                    <div class="mt-auto pt-4 border-t border-gray-800 text-center">
+                        <button onclick="promptForceEndTest()" class="text-sm text-red-400 hover:text-red-300 transition flex items-center justify-center mx-auto opacity-80 hover:opacity-100 bg-red-900/20 px-4 py-2 rounded-lg border border-red-900/50">
+                            <i class="fas fa-stop-circle mr-2"></i> จบการทดสอบและบันทึกคะแนน (Save Score)
+                        </button>
                     </div>
                 </div>
             </div>
@@ -209,44 +198,37 @@
             <!-- Result Screen -->
             <div id="screen-result" class="hidden flex-col items-center flex-grow w-full max-w-3xl mx-auto py-4">
                 <div class="text-center mb-6">
-                    <h2 class="text-3xl font-bold text-white uppercase tracking-widest">Mission Accomplished</h2>
-                    <p class="text-[#FFCC00] mt-1">สรุปผลการทดสอบ National Explorer</p>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white uppercase tracking-widest">Assessment Complete</h2>
+                    <p class="text-[#FFCC00] mt-1 text-sm"><i class="fas fa-check-circle mr-1"></i> บันทึกคะแนนลงระบบ Leaderboard เรียบร้อยแล้ว</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-8">
-                    <div class="bg-black/60 border border-[#FFCC00]/50 p-6 rounded text-center flex flex-col justify-center shadow-lg">
-                        <span class="text-gray-400 uppercase text-xs font-bold tracking-widest mb-2">Total Score</span>
-                        <div class="text-6xl font-black text-white" id="final-score">0</div>
-                        <span class="text-gray-500 text-sm mt-2">จากคะแนนสูงสุด 160 คะแนน</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-6">
+                    <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg text-center flex flex-col justify-center shadow-lg">
+                        <span class="text-gray-400 uppercase text-[10px] font-bold tracking-widest mb-1">Total Score</span>
+                        <div class="text-5xl md:text-6xl font-black text-white" id="final-score">0</div>
                     </div>
                     
-                    <div class="bg-[#FFCC00] text-black p-6 rounded text-center flex flex-col justify-center shadow-[0_0_30px_rgba(255,204,0,0.3)]">
-                        <span class="uppercase text-xs font-bold tracking-widest mb-2 opacity-80">Estimated CEFR Level</span>
-                        <div class="text-6xl font-black" id="final-cefr">A2</div>
-                        <span class="text-sm mt-2 font-semibold" id="cefr-desc">Basic User</span>
+                    <div class="bg-[#FFCC00] text-black p-6 rounded-lg text-center flex flex-col justify-center shadow-[0_0_25px_rgba(255,204,0,0.2)]">
+                        <span class="uppercase text-[10px] font-bold tracking-widest mb-1 opacity-80">CEFR Level</span>
+                        <div class="text-5xl md:text-6xl font-black" id="final-cefr">A2</div>
+                        <span class="text-xs mt-2 font-semibold" id="cefr-desc">Basic User</span>
                     </div>
                 </div>
 
-                <div class="w-full bg-black/60 border border-gray-800 p-6 rounded mb-8 shadow-lg">
-                    <h4 class="font-bold text-[#FFCC00] mb-4 uppercase tracking-widest text-sm border-b border-gray-800 pb-2">Performance Analysis</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6" id="skills-breakdown"></div>
-                    
-                    <div class="bg-gray-900 p-4 rounded border-l-4 border-[#FFCC00]">
-                        <h5 class="text-white font-bold mb-2 flex items-center"><i class="fas fa-lightbulb text-[#FFCC00] mr-2"></i> คำแนะนำสำหรับคุณ:</h5>
-                        <p id="recommendation-text" class="text-gray-300 text-sm leading-relaxed"></p>
-                    </div>
+                <div class="w-full bg-gray-900 border border-gray-800 p-5 rounded-lg mb-6 shadow-lg">
+                    <h4 class="font-bold text-[#FFCC00] mb-3 uppercase tracking-widest text-xs border-b border-gray-800 pb-2"><i class="fas fa-chart-bar mr-2"></i> Skill Breakdown</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4" id="skills-breakdown"></div>
                 </div>
                 
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button onclick="location.reload()" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-8 rounded transition shadow-md">
+                <div class="flex flex-col sm:flex-row gap-3 w-full">
+                    <button onclick="location.reload()" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-bold py-3 px-6 rounded-lg transition shadow-md flex-1 text-sm">
                         <i class="fas fa-redo mr-2"></i> ทำแบบทดสอบใหม่
                     </button>
-                    <button onclick="showHistoryFromResult()" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded transition border border-gray-600 shadow-md">
-                        <i class="fas fa-list-ol mr-2"></i> ดูตารางคะแนนรวม
+                    <button onclick="showHistoryFromResult()" class="bg-[#FFCC00] hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-lg transition shadow-[0_0_15px_rgba(255,204,0,0.3)] flex-1 text-sm">
+                        <i class="fas fa-list-ol mr-2"></i> ดูตารางคะแนน (Leaderboard)
                     </button>
                 </div>
             </div>
-            
         </main>
     </div>
 
@@ -255,8 +237,8 @@
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Required explicit paths for iframe environments
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'natgeo-english-test';
+        // Strictly use provided variables for collaborative persistence
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'natgeo-test-v4';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
 
         let app, db, auth;
@@ -264,7 +246,7 @@
 
         async function initAuth() {
             if (!firebaseConfig) {
-                console.warn("No Firebase config found. Running in local mode.");
+                console.warn("No Firebase config detected. Scores will not be saved to cloud.");
                 showEntryForm();
                 return;
             }
@@ -273,16 +255,18 @@
                 db = getFirestore(app);
                 auth = getAuth(app);
                 
+                // MANDATORY Auth before queries
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
                 } else {
                     await signInAnonymously(auth);
                 }
+                
                 isDbReady = true;
                 showEntryForm();
             } catch (e) {
-                console.error("Firebase init error:", e);
-                showEntryForm(); // Fallback to allow playing without DB
+                console.error("Firebase init failed:", e);
+                showEntryForm(); 
             }
         }
 
@@ -292,242 +276,141 @@
             document.getElementById('user-entry-form').classList.add('flex');
         }
 
+        // Expose database functions to window so normal scripts can use them
         window.saveResultToDb = async function(nickname, score, level) {
-            if (!isDbReady || !auth.currentUser) return;
+            if (!isDbReady || !auth.currentUser) return false;
             try {
+                // Strict path required by rules
                 const resultsRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
                 await addDoc(resultsRef, {
                     nickname: nickname,
-                    score: score,
+                    score: parseInt(score),
                     level: level,
                     timestamp: new Date().toISOString()
                 });
+                return true;
             } catch (e) {
-                console.error("Error saving result:", e);
+                console.error("Error saving result to DB:", e);
+                return false;
             }
         };
 
         window.fetchHistoryFromDb = async function() {
-            if (!isDbReady || !auth.currentUser) return [];
+            if (!isDbReady || !auth.currentUser) return null;
             try {
+                // Strict path required by rules
                 const resultsRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+                
+                // RULE: No complex queries. Fetch all and sort in memory.
                 const snapshot = await getDocs(resultsRef);
                 let history = [];
-                snapshot.forEach(doc => history.push(doc.data()));
-                history.sort((a, b) => b.score - a.score); // Highest score first
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if(data.nickname && data.score !== undefined) {
+                        history.push(data);
+                    }
+                });
+                
+                // Sort by score descending, then by timestamp descending
+                history.sort((a, b) => {
+                    if (b.score !== a.score) return b.score - a.score;
+                    return new Date(b.timestamp) - new Date(a.timestamp);
+                }); 
+                
                 return history;
             } catch (e) {
-                console.error("Error fetching history:", e);
-                return [];
+                console.error("Error fetching leaderboard:", e);
+                return null;
             }
         };
 
-        // Initialize on load
+        // Initialize Firebase when page loads
         initAuth();
     </script>
 
     <script>
-        // STRICTLY VALIDATED DATABASE: Every object MUST have {q, opts, a, cat} and {audio} for listening.
-        const db = {
-            1: { // Part 1: Vocab & Grammar
+        // Database structured for adaptive fetching
+        const dbQuestions = {
+            1: { // Vocab & Grammar
                 A1: [
-                    { q: "The sun ____ very bright today.", opts: ["is", "are", "am", "be"], a: 0, cat: "Grammar" },
+                    { q: "The earth ____ round.", opts: ["is", "are", "am", "be"], a: 0, cat: "Grammar" },
                     { q: "Elephants ____ big ears.", opts: ["has", "have", "having", "is"], a: 1, cat: "Grammar" },
-                    { q: "A bird flies in the ____.", opts: ["water", "ground", "sky" , "tree"], a: 2, cat: "Vocabulary" },
-                    { q: "I ____ a large fish in the river yesterday.", opts: ["see", "seeing", "saw", "sees"], a: 2, cat: "Grammar" },
+                    { q: "A bird flies in the ____.", opts: ["water", "ground", "sky", "tree"], a: 2, cat: "Vocabulary" },
                     { q: "We need ____ to survive.", opts: ["water", "rock", "sand", "plastic"], a: 0, cat: "Vocabulary" },
-                    { q: "The lion is sleeping ____ the tree.", opts: ["on", "under", "between", "at"], a: 1, cat: "Grammar" },
-                    { q: "Cats like to eat ____.", opts: ["grass", "metal", "fish", "wood"], a: 2, cat: "Vocabulary" },
-                    { q: "She ____ not like cold weather.", opts: ["do", "is", "are", "does"], a: 3, cat: "Grammar" },
-                    { q: "A baby dog is a ____.", opts: ["kitten", "puppy", "cub", "calf"], a: 1, cat: "Vocabulary" },
-                    { q: "There ____ many trees in the forest.", opts: ["is", "are", "was", "be"], a: 1, cat: "Grammar" },
-                    { q: "The sky is ____.", opts: ["green", "red", "blue", "yellow"], a: 2, cat: "Vocabulary" },
-                    { q: "They ____ walking in the park now.", opts: ["am", "is", "are", "be"], a: 2, cat: "Grammar" },
-                    { q: "Apples are ____.", opts: ["fruit", "meat", "fish", "vegetable"], a: 0, cat: "Vocabulary" },
-                    { q: "He is a good ____. He takes photos of animals.", opts: ["doctor", "photographer", "teacher", "driver"], a: 1, cat: "Vocabulary" },
-                    { q: "We ____ to the zoo tomorrow.", opts: ["went", "go", "are going", "gone"], a: 2, cat: "Grammar" }
+                    { q: "Cats like to eat ____.", opts: ["grass", "metal", "fish", "wood"], a: 2, cat: "Vocabulary" }
                 ],
                 A2: [
                     { q: "Mount Everest is ____ than K2.", opts: ["high", "higher", "highest", "more high"], a: 1, cat: "Grammar" },
                     { q: "Penguins live in a very cold ____.", opts: ["environment", "room", "city", "desert"], a: 0, cat: "Vocabulary" },
-                    { q: "I have lived in this town ____ 10 years.", opts: ["since", "for", "in", "at"], a: 1, cat: "Grammar" },
-                    { q: "Many animals are losing their natural ____ due to farming.", opts: ["habitats", "habits", "homes", "houses"], a: 0, cat: "Vocabulary" },
-                    { q: "She ____ already finished reading the book about dinosaurs.", opts: ["have", "has", "is", "was"], a: 1, cat: "Grammar" },
-                    { q: "A compass shows you the ____.", opts: ["time", "weather", "direction", "temperature"], a: 2, cat: "Vocabulary" },
-                    { q: "If you drop ice in water, it ____.", opts: ["sink", "sinks", "float", "floats"], a: 3, cat: "Grammar" },
-                    { q: "The ____ in the rainforest is very humid.", opts: ["climate", "ground", "leaf", "river"], a: 0, cat: "Vocabulary" },
-                    { q: "There aren't ____ tigers left in the wild.", opts: ["much", "many", "some", "a lot"], a: 1, cat: "Grammar" },
-                    { q: "Telescopes are used to look at the ____.", opts: ["cells", "stars", "atoms", "ocean"], a: 1, cat: "Vocabulary" },
-                    { q: "He walks very ____ when he is in the jungle.", opts: ["quiet", "quietly", "quieter", "quietest"], a: 1, cat: "Grammar" },
-                    { q: "We must ____ the forest from fires.", opts: ["protect", "destroy", "cut", "build"], a: 0, cat: "Vocabulary" },
-                    { q: "They ____ watching a documentary when the power went out.", opts: ["are", "were", "have", "had"], a: 1, cat: "Grammar" },
-                    { q: "A volcano can erupt and release hot ____.", opts: ["water", "ice", "lava", "sand"], a: 2, cat: "Vocabulary" },
-                    { q: "I would like to travel ____ the world.", opts: ["around", "in", "on", "at"], a: 0, cat: "Grammar" }
+                    { q: "I have lived here ____ 10 years.", opts: ["since", "for", "in", "at"], a: 1, cat: "Grammar" },
+                    { q: "Animals are losing their natural ____.", opts: ["habitats", "habits", "homes", "houses"], a: 0, cat: "Vocabulary" },
+                    { q: "A compass shows you the ____.", opts: ["time", "weather", "direction", "temperature"], a: 2, cat: "Vocabulary" }
                 ],
                 B1: [
                     { q: "If we don't act now, many species ____ extinct.", opts: ["become", "became", "will become", "have become"], a: 2, cat: "Grammar" },
                     { q: "Deforestation is a major threat to global ____.", opts: ["diversity", "biodiversity", "biology", "botany"], a: 1, cat: "Vocabulary" },
-                    { q: "The ancient ruins ____ discovered by archaeologists last year.", opts: ["are", "were", "have been", "had"], a: 1, cat: "Grammar" },
                     { q: "Solar panels are a source of ____ energy.", opts: ["fossil", "exhaustible", "renewable", "nuclear"], a: 2, cat: "Vocabulary" },
                     { q: "I wish I ____ more about marine biology.", opts: ["know", "knew", "have known", "knowing"], a: 1, cat: "Grammar" },
-                    { q: "The government established a nature ____ to protect the rare birds.", opts: ["reserve", "resort", "reservation", "preserve"], a: 0, cat: "Vocabulary" },
-                    { q: "He asked me where I ____ the strange insect.", opts: ["found", "have found", "had found", "find"], a: 2, cat: "Grammar" },
-                    { q: "Air ____ in big cities can cause breathing problems.", opts: ["pollution", "solution", "evolution", "revolution"], a: 0, cat: "Vocabulary" },
-                    { q: "The documentary was ____ interesting that I watched it twice.", opts: ["so", "such", "very", "too"], a: 0, cat: "Grammar" },
-                    { q: "Cheetahs are known as the fastest land ____.", opts: ["predators", "prey", "reptiles", "amphibians"], a: 0, cat: "Vocabulary" },
-                    { q: "By the time we reached the camp, it ____ raining.", opts: ["started", "has started", "had started", "was starting"], a: 2, cat: "Grammar" },
-                    { q: "Plastic waste in the ocean is highly ____ to marine life.", opts: ["beneficial", "toxic", "safe", "healthy"], a: 1, cat: "Vocabulary" },
-                    { q: "You ____ not touch that plant; it might be poisonous.", opts: ["could", "should", "would", "might"], a: 1, cat: "Grammar" },
-                    { q: "The expedition required a lot of specialized ____.", opts: ["equipment", "tools", "machines", "devices"], a: 0, cat: "Vocabulary" },
-                    { q: "She is the scientist ____ research saved the coral reef.", opts: ["who", "whom", "which", "whose"], a: 3, cat: "Grammar" }
+                    { q: "Air ____ in big cities causes breathing problems.", opts: ["pollution", "solution", "evolution", "revolution"], a: 0, cat: "Vocabulary" }
                 ],
                 B2: [
                     { q: "Scarcely ____ the shelter when the blizzard struck.", opts: ["they had reached", "did they reach", "had they reached", "they reach"], a: 2, cat: "Grammar" },
-                    { q: "The melting of the polar ice caps will inevitably lead to a dire ____.", opts: ["consequence", "coincidence", "circumstance", "convenience"], a: 0, cat: "Vocabulary" },
-                    { q: "____ the severe weather conditions, the exploration team pressed on.", opts: ["Although", "Despite", "However", "Because of"], a: 1, cat: "Grammar" },
-                    { q: "Efforts to ____ the endangered rhinoceros population are finally yielding results.", opts: ["exploit", "deplete", "rehabilitate", "eradicate"], a: 2, cat: "Vocabulary" },
-                    { q: "The fragile ecosystem ____ by invasive plant species over the last decade.", opts: ["has been severely degraded", "was severely degrading", "had severely degraded", "severely degrades"], a: 0, cat: "Grammar" },
-                    { q: "Many indigenous flora have medicinal properties that can ____ chronic pain.", opts: ["alleviate", "aggravate", "elevate", "deviate"], a: 0, cat: "Vocabulary" },
-                    { q: "Not only ____ highly intelligent, but dolphins also exhibit complex social structures.", opts: ["they are", "are they", "do they", "they do"], a: 1, cat: "Grammar" },
-                    { q: "The continuous burning of fossil fuels ____ global warming.", opts: ["mitigates", "exacerbates", "alleviates", "pacifies"], a: 1, cat: "Vocabulary" },
-                    { q: "If the conservation act ____ passed sooner, the species might have survived.", opts: ["was", "were", "has been", "had been"], a: 3, cat: "Grammar" },
-                    { q: "The geologist found an anomaly in rock strata that was highly ____.", opts: ["perplexing", "obvious", "mundane", "transparent"], a: 0, cat: "Vocabulary" },
-                    { q: "It is imperative that the new environmental policy ____ implemented immediately.", opts: ["is", "be", "was", "will be"], a: 1, cat: "Grammar" },
-                    { q: "The drought has left the soil completely ____ and unable to support crops.", opts: ["fertile", "arid", "lush", "damp"], a: 1, cat: "Vocabulary" },
-                    { q: "He would have perished in the desert, ____ for the timely arrival of the rescue helicopter.", opts: ["if it wasn't", "had it not been", "unless it was", "were it not"], a: 1, cat: "Grammar" },
-                    { q: "The community holds a ____ view of the mining project, fearing contamination.", opts: ["favorable", "skeptical", "optimistic", "naïve"], a: 1, cat: "Vocabulary" },
-                    { q: "The research findings ____ conventional theories about tectonic plate movement.", opts: ["corroborate", "contradict", "substantiate", "verify"], a: 0, cat: "Vocabulary" }
+                    { q: "The melting ice caps will lead to a dire ____.", opts: ["consequence", "coincidence", "circumstance", "convenience"], a: 0, cat: "Vocabulary" },
+                    { q: "____ the severe weather, the team pressed on.", opts: ["Although", "Despite", "However", "Because of"], a: 1, cat: "Grammar" },
+                    { q: "Efforts to ____ the endangered population are yielding results.", opts: ["exploit", "deplete", "rehabilitate", "eradicate"], a: 2, cat: "Vocabulary" },
+                    { q: "The fragile ecosystem ____ by invasive species.", opts: ["has been degraded", "was degrading", "had degraded", "degrades"], a: 0, cat: "Grammar" }
                 ]
             },
-            2: { // Part 2: Conversations
+            2: { // Conversations
                  A1: [
                     { q: "A: How is the weather?\nB: ____", opts: ["It is raining.", "It is blue.", "It is a tree.", "I am fine."], a: 0, cat: "Conversation" },
                     { q: "A: What animal is that?\nB: ____ a zebra.", opts: ["This", "Its", "It's", "He's"], a: 2, cat: "Conversation" },
-                    { q: "A: Do you like spiders?\nB: No, I ____.", opts: ["aren't", "don't", "doesn't", "isn't"], a: 1, cat: "Conversation" },
                     { q: "A: Look at the mountain!\nB: Wow, it is very ____.", opts: ["small", "short", "tall", "fast"], a: 2, cat: "Conversation" },
-                    { q: "A: Where are the elephants?\nB: They are in the ____.", opts: ["sky", "water", "zoo", "car"], a: 2, cat: "Conversation" },
-                    { q: "A: Is the snake dangerous?\nB: Yes, it ____.", opts: ["does", "is", "has", "can"], a: 1, cat: "Conversation" },
-                    { q: "A: What time is the safari tour?\nB: It starts ____ 9 AM.", opts: ["in", "on", "at", "to"], a: 2, cat: "Conversation" },
-                    { q: "A: Can birds fly?\nB: Yes, they ____.", opts: ["can", "do", "are", "have"], a: 0, cat: "Conversation" },
-                    { q: "A: I love nature.\nB: ____ too.", opts: ["I", "Me", "My", "Mine"], a: 1, cat: "Conversation" },
-                    { q: "A: Whose camera is this?\nB: It is ____.", opts: ["my", "mine", "me", "I"], a: 1, cat: "Conversation" },
-                    { q: "A: How many legs does a spider have?\nB: It has ____.", opts: ["six", "eight", "ten", "four"], a: 1, cat: "Conversation" },
-                    { q: "A: Are you afraid of the dark?\nB: No, I am ____.", opts: ["not", "no", "never", "none"], a: 0, cat: "Conversation" },
-                    { q: "A: What color is the ocean?\nB: It is mostly ____.", opts: ["red", "blue", "green", "black"], a: 1, cat: "Conversation" },
-                    { q: "A: Let's go to the park.\nB: ____ a good idea!", opts: ["That's", "This", "It", "There is"], a: 0, cat: "Conversation" }
+                    { q: "A: Can birds fly?\nB: Yes, they ____.", opts: ["can", "do", "are", "have"], a: 0, cat: "Conversation" }
                  ],
                  A2: [
                     { q: "A: Have you ever seen a whale?\nB: Yes, I ____.", opts: ["did", "saw", "have", "do"], a: 2, cat: "Conversation" },
                     { q: "A: Why are you wearing a jacket?\nB: Because the wind is ____.", opts: ["blowing", "raining", "snowing", "sunny"], a: 0, cat: "Conversation" },
-                    { q: "A: How long did you hike?\nB: We walked ____ three hours.", opts: ["since", "for", "in", "during"], a: 1, cat: "Conversation" },
                     { q: "A: Shall we pitch the tent here?\nB: No, the ground is too ____.", opts: ["soft", "wet", "sunny", "tall"], a: 1, cat: "Conversation" },
-                    { q: "A: What should we bring to the jungle?\nB: You need insect ____.", opts: ["spray", "water", "food", "clothes"], a: 0, cat: "Conversation" },
-                    { q: "A: I didn't see any monkeys.\nB: They ____ be sleeping.", opts: ["must", "can", "should", "will"], a: 0, cat: "Conversation" },
-                    { q: "A: Was the cave dark?\nB: Yes, we had to use our ____.", opts: ["phones", "sunglasses", "flashlights", "maps"], a: 2, cat: "Conversation" },
-                    { q: "A: How deep is the lake?\nB: I'm not sure, but it looks ____.", opts: ["shallow", "long", "deep", "wide"], a: 2, cat: "Conversation" },
-                    { q: "A: Are we lost?\nB: Let me check the ____.", opts: ["compass", "book", "radio", "clock"], a: 0, cat: "Conversation" },
-                    { q: "A: Did you take photos of the tigers?\nB: No, they moved too ____.", opts: ["fast", "slow", "quietly", "loudly"], a: 0, cat: "Conversation" },
-                    { q: "A: Is it safe to swim here?\nB: No, there are ____ in the water.", opts: ["crocodiles", "birds", "trees", "clouds"], a: 0, cat: "Conversation" },
-                    { q: "A: It's getting dark.\nB: We should head ____ to the camp.", opts: ["back", "forward", "up", "down"], a: 0, cat: "Conversation" },
-                    { q: "A: Did you pack the binoculars?\nB: Yes, I put ____ in the bag.", opts: ["it", "them", "they", "its"], a: 1, cat: "Conversation" },
-                    { q: "A: The forecast says it will rain.\nB: Then we'd better ____ our raincoats.", opts: ["take", "taking", "took", "to take"], a: 0, cat: "Conversation" }
+                    { q: "A: Was the cave dark?\nB: Yes, we used our ____.", opts: ["phones", "sunglasses", "flashlights", "maps"], a: 2, cat: "Conversation" }
                  ],
                  B1: [
                     { q: "A: I think we should ban single-use plastics.\nB: I completely ____ with you.", opts: ["accept", "agree", "allow", "approve"], a: 1, cat: "Conversation" },
-                    { q: "A: Did you manage to photograph the eagle?\nB: No, it flew away before I ____ get my camera out.", opts: ["can", "should", "could", "would"], a: 2, cat: "Conversation" },
-                    { q: "A: It's freezing up here!\nB: You ____ have brought a thicker coat.", opts: ["must", "should", "could", "might"], a: 1, cat: "Conversation" },
                     { q: "A: Look at this strange insect!\nB: Be careful, it ____ be poisonous.", opts: ["can't", "won't", "might", "shall"], a: 2, cat: "Conversation" },
                     { q: "A: The deforestation rates are alarming.\nB: Yes, something must be ____ about it.", opts: ["do", "did", "done", "doing"], a: 2, cat: "Conversation" },
-                    { q: "A: Are you accustomed to the altitude yet?\nB: Not really, I'm finding it hard to ____.", opts: ["breathe", "breath", "breathing", "breathed"], a: 0, cat: "Conversation" },
-                    { q: "A: If we leave now, will we reach the summit by noon?\nB: Yes, ____ we keep a steady pace.", opts: ["provided", "unless", "in case", "although"], a: 0, cat: "Conversation" },
-                    { q: "A: I'm worried about the storm.\nB: Don't worry, the tent is designed to ____ high winds.", opts: ["withstand", "prevent", "support", "overcome"], a: 0, cat: "Conversation" },
-                    { q: "A: Did the guide warn us about bears?\nB: Yes, he told us to ____ clear of the berry bushes.", opts: ["keep", "stay", "steer", "All of the above"], a: 3, cat: "Conversation" },
-                    { q: "A: What's the main cause of global warming?\nB: It's primarily driven by carbon ____.", opts: ["omissions", "emissions", "admissions", "commissions"], a: 1, cat: "Conversation" },
-                    { q: "A: I've never seen such a beautiful waterfall.\nB: It truly takes your ____ away, doesn't it?", opts: ["breath", "mind", "heart", "soul"], a: 0, cat: "Conversation" },
-                    { q: "A: Do you think we can cross the river here?\nB: The current looks too strong. We'd better ____ it.", opts: ["risk", "not risk", "risking", "no risk"], a: 1, cat: "Conversation" },
-                    { q: "A: How can we reduce our carbon footprint?\nB: By ____ to renewable energy sources.", opts: ["switching", "switch", "switched", "to switch"], a: 0, cat: "Conversation" },
-                    { q: "A: The expedition was cancelled due to funding.\nB: That's a ____. I was looking forward to it.", opts: ["shame", "blame", "crime", "fault"], a: 0, cat: "Conversation" }
+                    { q: "A: I'm worried about the storm.\nB: Don't worry, the tent is designed to ____ high winds.", opts: ["withstand", "prevent", "support", "overcome"], a: 0, cat: "Conversation" }
                  ],
                  B2: [
-                    { q: "A: The documentary implies that climate change is irreversible.\nB: Well, I wouldn't go ____ far.", opts: ["that", "so", "as", "too"], a: 0, cat: "Conversation" },
-                    { q: "A: It's vital that the funding for conservation ____ secured immediately.\nB: I've already spoken to the board.", opts: ["is", "be", "was", "has"], a: 1, cat: "Conversation" },
-                    { q: "A: The expedition was an absolute disaster.\nB: It wouldn't have been, ____ you followed the map.", opts: ["if", "unless", "had", "provided"], a: 2, cat: "Conversation" },
-                    { q: "A: I can't wrap my head around this geological data.\nB: Let me try to break it ____ for you.", opts: ["up", "out", "off", "down"], a: 3, cat: "Conversation" },
-                    { q: "A: The new emissions policy is causing quite an uproar.\nB: True, but it's a necessary step to curb environmental ____.", opts: ["degradation", "upgrades", "evolution", "fluctuation"], a: 0, cat: "Conversation" },
-                    { q: "A: Do you think solar energy will replace fossil fuels?\nB: Eventually, but it won't happen ____ overnight.", opts: ["exactly", "literally", "strictly", "necessarily"], a: 1, cat: "Conversation" },
-                    { q: "A: The sheer diversity of species in the Amazon is mind-boggling.\nB: It is, which makes its rapid destruction all the more ____.", opts: ["tragic", "ironic", "pathetic", "comic"], a: 0, cat: "Conversation" },
-                    { q: "A: I'm skeptical about the proposed geoengineering solutions.\nB: Rightfully so. Meddling with the climate could have unforeseen ____.", opts: ["benefits", "repercussions", "advantages", "rewards"], a: 1, cat: "Conversation" },
-                    { q: "A: We need to clamp down on illegal poaching immediately.\nB: Easier said than ____, considering the resources involved.", opts: ["done", "made", "thought", "spoken"], a: 0, cat: "Conversation" },
-                    { q: "A: The summit's resolution was rather ambiguous, wasn't it?\nB: Deliberately so, I suspect, to appease all ____.", opts: ["parties", "events", "celebrations", "gatherings"], a: 0, cat: "Conversation" },
-                    { q: "A: The findings contradict previous hypotheses regarding glacial retreat.\nB: Indeed, this requires a paradigm ____ in our understanding.", opts: ["shift", "move", "jump", "leap"], a: 0, cat: "Conversation" },
-                    { q: "A: By refusing to sign the treaty, they're burying their heads in the ____.\nB: Ignorance is bliss, until the water level rises.", opts: ["sand", "clouds", "water", "ground"], a: 0, cat: "Conversation" },
-                    { q: "A: The project was shelved due to bureaucratic red ____.\nB: Typical. Environmental concerns always take a back seat.", opts: ["tape", "flag", "light", "line"], a: 0, cat: "Conversation" }
+                    { q: "A: The documentary implies climate change is irreversible.\nB: I wouldn't go ____ far.", opts: ["that", "so", "as", "too"], a: 0, cat: "Conversation" },
+                    { q: "A: It's vital that the funding ____ secured immediately.\nB: I've spoken to the board.", opts: ["is", "be", "was", "has"], a: 1, cat: "Conversation" },
+                    { q: "A: Do you think solar energy will replace fossil fuels?\nB: Yes, but it won't happen ____ overnight.", opts: ["exactly", "literally", "strictly", "necessarily"], a: 1, cat: "Conversation" },
+                    { q: "A: The sheer diversity in the Amazon is mind-boggling.\nB: It makes its destruction all the more ____.", opts: ["tragic", "ironic", "pathetic", "comic"], a: 0, cat: "Conversation" }
                  ]
             },
-            3: { // Part 3: Listening
+            3: { // Listening
                  A1: [
                     { audio: "The bear is sleeping in the cave.", q: "Where is the bear?", opts: ["In the tree", "In the river", "In the cave", "In the zoo"], a: 2, cat: "Listening" },
                     { audio: "I see three red birds in the sky.", q: "How many birds are there?", opts: ["Two", "Three", "Four", "Five"], a: 1, cat: "Listening" },
-                    { audio: "It is very cold and snowing in the winter.", q: "How is the weather?", opts: ["Hot", "Warm", "Cold", "Sunny"], a: 2, cat: "Listening" },
                     { audio: "The monkey is eating a yellow banana.", q: "What is the monkey eating?", opts: ["An apple", "A banana", "A leaf", "A bug"], a: 1, cat: "Listening" },
-                    { audio: "We are going to the beach tomorrow.", q: "Where are they going?", opts: ["To the mountain", "To the forest", "To the beach", "To the city"], a: 2, cat: "Listening" },
-                    { audio: "Lions eat meat, not grass.", q: "What do lions eat?", opts: ["Grass", "Meat", "Fruits", "Leaves"], a: 1, cat: "Listening" },
-                    { audio: "The snake is very long and green.", q: "What color is the snake?", opts: ["Red", "Blue", "Green", "Black"], a: 2, cat: "Listening" },
-                    { audio: "I have a pet dog. His name is Max.", q: "What pet does the person have?", opts: ["A cat", "A bird", "A fish", "A dog"], a: 3, cat: "Listening" },
-                    { audio: "The sun is shining and the sky is blue.", q: "What color is the sky?", opts: ["Grey", "Black", "Blue", "White"], a: 2, cat: "Listening" },
-                    { audio: "Water is very important for plants.", q: "What is important for plants?", opts: ["Rocks", "Water", "Sand", "Plastic"], a: 1, cat: "Listening" },
-                    { audio: "The frog jumps into the pond.", q: "Where does the frog jump?", opts: ["Into the tree", "Into the house", "Into the pond", "Into the car"], a: 2, cat: "Listening" },
-                    { audio: "Elephants are very large animals.", q: "What size are elephants?", opts: ["Small", "Large", "Short", "Tiny"], a: 1, cat: "Listening" },
-                    { audio: "We sleep in a tent when we go camping.", q: "Where do they sleep when camping?", opts: ["In a hotel", "In a car", "In a house", "In a tent"], a: 3, cat: "Listening" },
-                    { audio: "The moon comes out at night.", q: "When does the moon come out?", opts: ["In the morning", "At noon", "In the afternoon", "At night"], a: 3, cat: "Listening" }
+                    { audio: "Lions eat meat, not grass.", q: "What do lions eat?", opts: ["Grass", "Meat", "Fruits", "Leaves"], a: 1, cat: "Listening" }
                  ],
                  A2: [
-                    { audio: "The female sea turtle lays her eggs in the warm sand on the beach.", q: "Where does the turtle lay eggs?", opts: ["In the ocean water", "On rocks", "In the sand", "In the grass"], a: 2, cat: "Listening" },
-                    { audio: "We visited a beautiful, tall waterfall in the jungle yesterday afternoon.", q: "What did they visit?", opts: ["A river", "A waterfall", "A tall mountain", "A deep cave"], a: 1, cat: "Listening" },
-                    { audio: "A cheetah can run very fast, but it can only maintain its top speed for a short time.", q: "What is true about the cheetah?", opts: ["It runs slowly", "It runs fast for a long time", "It runs fast for a short time", "It never stops running"], a: 2, cat: "Listening" },
-                    { audio: "You should wear sturdy boots because the hiking trail is very rocky and steep.", q: "Why should you wear sturdy boots?", opts: ["Because it is raining", "Because the trail is rocky and steep", "Because there are snakes", "Because it is cold"], a: 1, cat: "Listening" },
-                    { audio: "Camels store fat in their humps to survive long journeys across the desert.", q: "What do camels store in their humps?", opts: ["Water", "Sand", "Fat", "Milk"], a: 2, cat: "Listening" },
-                    { audio: "Please remember to take all your trash with you when you leave the park.", q: "What should visitors do when leaving?", opts: ["Take photos", "Feed the animals", "Take their trash", "Build a fire"], a: 2, cat: "Listening" },
-                    { audio: "The documentary is about penguins living in Antarctica.", q: "What is the documentary about?", opts: ["Lions in Africa", "Polar bears in the Arctic", "Penguins in Antarctica", "Whales in the ocean"], a: 2, cat: "Listening" },
-                    { audio: "We need to set up the tent before it gets dark.", q: "When do they need to set up the tent?", opts: ["After dinner", "Before it gets dark", "In the morning", "Next week"], a: 1, cat: "Listening" },
-                    { audio: "Owls hunt for mice and small insects at night.", q: "When do owls hunt?", opts: ["In the morning", "In the afternoon", "At night", "During the day"], a: 2, cat: "Listening" },
-                    { audio: "The guide told us to stay together and not wander off the path.", q: "What did the guide say?", opts: ["To run ahead", "To stay together", "To split up", "To hide"], a: 1, cat: "Listening" },
-                    { audio: "The river water is clean, but you must boil it before drinking.", q: "What must you do before drinking the river water?", opts: ["Freeze it", "Filter it", "Boil it", "Nothing"], a: 2, cat: "Listening" },
-                    { audio: "Most sharks live in the ocean, but a few can swim into freshwater rivers.", q: "Where do most sharks live?", opts: ["In freshwater rivers", "In the ocean", "In lakes", "In aquariums"], a: 1, cat: "Listening" },
-                    { audio: "We saw a rainbow after the heavy rain stopped.", q: "When did they see the rainbow?", opts: ["Before the rain", "During the rain", "After the rain stopped", "At night"], a: 2, cat: "Listening" },
-                    { audio: "Leaves turn yellow and red during the autumn season.", q: "When do leaves change color?", opts: ["Spring", "Summer", "Autumn", "Winter"], a: 2, cat: "Listening" }
+                    { audio: "The sea turtle lays eggs in the warm sand.", q: "Where does the turtle lay eggs?", opts: ["Ocean water", "Rocks", "Sand", "Grass"], a: 2, cat: "Listening" },
+                    { audio: "A cheetah can run fast, but only for a short time.", q: "What is true about the cheetah?", opts: ["Runs slowly", "Runs fast for a long time", "Runs fast for a short time", "Never stops"], a: 2, cat: "Listening" },
+                    { audio: "Camels store fat in their humps.", q: "What do camels store in their humps?", opts: ["Water", "Sand", "Fat", "Milk"], a: 2, cat: "Listening" },
+                    { audio: "We need to set up the tent before it gets dark.", q: "When do they need to set up the tent?", opts: ["After dinner", "Before it gets dark", "In the morning", "Next week"], a: 1, cat: "Listening" }
                  ],
                  B1: [
-                    { audio: "Deforestation in the Amazon basin is causing a rapid loss of biodiversity.", q: "What is the primary cause of biodiversity loss mentioned?", opts: ["Industrial pollution", "Climate change", "Deforestation", "Overhunting"], a: 2, cat: "Listening" },
-                    { audio: "Despite the heavy rain, the determined explorers managed to reach the summit by noon.", q: "Did the explorers reach the summit?", opts: ["No, it rained too hard.", "Yes, they reached it by noon.", "They are still trying.", "They turned back."], a: 1, cat: "Listening" },
-                    { audio: "The blue whale is often mistaken for a fish; however, it is actually a marine mammal.", q: "What classification is the blue whale?", opts: ["A large fish", "A reptile", "A marine mammal", "An amphibian"], a: 2, cat: "Listening" },
-                    { audio: "Solar energy is considered a renewable resource because the sun will shine for billions of years.", q: "Why is solar energy renewable?", opts: ["It is cheap.", "The sun will shine for billions of years.", "It does not pollute.", "It is easy to store."], a: 1, cat: "Listening" },
-                    { audio: "Many species of frogs are indicator species because their health reflects the purity of their environment.", q: "What does the health of indicator species reflect?", opts: ["The purity of their environment", "The temperature", "The amount of rainfall", "Predator numbers"], a: 0, cat: "Listening" },
-                    { audio: "The government implemented strict quotas to prevent the overfishing of tuna.", q: "Why were strict quotas implemented?", opts: ["To catch more tuna", "To lower fish prices", "To prevent overfishing", "To encourage tourism"], a: 2, cat: "Listening" },
-                    { audio: "We advise all hikers to carry a physical map, as GPS signals are highly unreliable here.", q: "Why should hikers carry a physical map?", opts: ["GPS is too heavy", "Batteries die quickly", "GPS signals are unreliable", "Maps show more detail"], a: 2, cat: "Listening" },
-                    { audio: "Corals are actually tiny animals called polyps that live together in colonies.", q: "What are corals?", opts: ["Underwater plants", "Colorful rocks", "Tiny animals called polyps", "Dead shells"], a: 2, cat: "Listening" },
-                    { audio: "The sudden drop in atmospheric pressure suggests that a severe storm is approaching.", q: "What does a drop in pressure suggest?", opts: ["Clear skies", "A storm is approaching", "An earthquake", "High temperatures"], a: 1, cat: "Listening" },
-                    { audio: "Although venomous, the spider rarely bites humans unless it feels threatened.", q: "When is the spider likely to bite a human?", opts: ["When it is hungry", "When it is hunting", "When it feels threatened", "At night"], a: 2, cat: "Listening" },
-                    { audio: "To combat desertification, communities have started planting drought-resistant trees.", q: "How are communities combating desertification?", opts: ["By building dams", "By planting trees", "By digging wells", "By moving to cities"], a: 1, cat: "Listening" },
-                    { audio: "The documentary highlights the perilous migration journey of the monarch butterfly.", q: "What journey is highlighted?", opts: ["Bird migration", "Bear hibernation", "Monarch butterfly migration", "Whale swimming patterns"], a: 2, cat: "Listening" },
-                    { audio: "Volcanic ash from the eruption grounded flights across the continent for a week.", q: "What caused flights to be grounded?", opts: ["A hurricane", "A pilot strike", "Volcanic ash", "Heavy snowfall"], a: 2, cat: "Listening" },
-                    { audio: "Researchers utilize carbon dating to determine the exact age of the fossils.", q: "What technique is used to determine fossil age?", opts: ["DNA sequencing", "Carbon dating", "Microscopic analysis", "Chemical washing"], a: 1, cat: "Listening" }
+                    { audio: "Deforestation is causing a rapid loss of biodiversity.", q: "What causes biodiversity loss?", opts: ["Pollution", "Climate change", "Deforestation", "Hunting"], a: 2, cat: "Listening" },
+                    { audio: "Solar energy is a renewable resource because the sun will shine for billions of years.", q: "Why is solar energy renewable?", opts: ["It is cheap", "Sun shines for billions of years", "No pollution", "Easy to store"], a: 1, cat: "Listening" },
+                    { audio: "Corals are tiny animals called polyps.", q: "What are corals?", opts: ["Underwater plants", "Colorful rocks", "Tiny animals called polyps", "Dead shells"], a: 2, cat: "Listening" },
+                    { audio: "Volcanic ash grounded flights for a week.", q: "What caused flights to be grounded?", opts: ["Hurricane", "Pilot strike", "Volcanic ash", "Snowfall"], a: 2, cat: "Listening" }
                  ],
                  B2: [
-                    { audio: "The symbiotic relationship between the clownfish and the sea anemone is a quintessential example of mutualism.", q: "What biological concept is described?", opts: ["Parasitism", "Competitive exclusion", "Mutualism", "Predatory adaptation"], a: 2, cat: "Listening" },
-                    { audio: "Geologists hypothesize that the tectonic shift occurred millennia earlier than previously assumed.", q: "What is the new hypothesis?", opts: ["It will happen soon.", "It occurred later.", "It occurred earlier than assumed.", "It was continuous."], a: 2, cat: "Listening" },
-                    { audio: "Despite stringent regulations, the illicit ivory trade continues to decimate elephant populations.", q: "What is the effect of regulations?", opts: ["Halted the trade.", "Encouraged poaching.", "Failed to stop decimation.", "Deemed unnecessary."], a: 2, cat: "Listening" },
-                    { audio: "Permafrost melting in Siberia threatens to release vast quantities of methane, exacerbating climate change.", q: "What is the primary concern of melting permafrost?", opts: ["Loss of habitat", "Flooding cities", "Release of methane gas", "Decreased fertility"], a: 2, cat: "Listening" },
-                    { audio: "Biomimicry involves studying nature's engineering and replicating its designs to solve human challenges.", q: "What is biomimicry?", opts: ["Synthetic biology", "Replicating nature's designs", "Studying captive behavior", "Modifying plants"], a: 1, cat: "Listening" },
-                    { audio: "The introduction of the cane toad is frequently cited as a textbook case of an ecological disaster.", q: "How is the cane toad viewed?", opts: ["An agricultural triumph", "An ecological disaster", "A minor inconvenience", "A successful control method"], a: 1, cat: "Listening" },
-                    { audio: "Ocean acidification, driven by excess carbon dioxide absorption, poses a critical threat to corals.", q: "What drives ocean acidification?", opts: ["Chemical spills", "Excess carbon dioxide absorption", "Rising temperatures", "Overfishing"], a: 1, cat: "Listening" },
-                    { audio: "The indigenous tribe possesses intricate empirical knowledge of medicinal plants, accumulated over generations.", q: "What characterizes their knowledge?", opts: ["Newly discovered.", "Relies on modern science.", "Empirical and accumulated over generations.", "Largely myth."], a: 2, cat: "Listening" },
-                    { audio: "Satellite imagery has unequivocally corroborated the extent of the glacial retreat, silencing skeptics.", q: "What impact did satellite imagery have?", opts: ["Raised questions.", "Proved skeptics right.", "Corroborated glacial retreat.", "Showed glaciers expanding."], a: 2, cat: "Listening" },
-                    { audio: "Urban sprawl fragments habitats, severely restricting the animal gene pool.", q: "What is a consequence of habitat fragmentation?", opts: ["Increased biodiversity", "Restricted animal gene pools", "Better adaptations", "Population reduction"], a: 1, cat: "Listening" },
-                    { audio: "The expedition aimed to collect core samples to analyze atmospheric composition from a hundred thousand years ago.", q: "Why collect ice core samples?", opts: ["Find ancient bacteria", "Measure ice thickness", "Analyze ancient atmospheric composition", "Track currents"], a: 2, cat: "Listening" },
-                    { audio: "Subsidies for fossil fuels effectively hinder the widespread adoption of renewable energy alternatives.", q: "What effect do fossil fuel subsidies have?", opts: ["Promote green energy.", "Hinder renewable energy adoption.", "Lower carbon emissions.", "No economic impact."], a: 1, cat: "Listening" },
-                    { audio: "Conservation efforts must prioritize keystone species, whose removal would precipitate ecosystem collapse.", q: "Why prioritize keystone species?", opts: ["Most beautiful.", "Easiest to breed.", "Removal causes ecosystem collapse.", "Most endangered."], a: 2, cat: "Listening" },
-                    { audio: "While mitigation strategies are robust, they must be implemented universally to avert catastrophic tipping points.", q: "What is required for strategies to succeed?", opts: ["Universal implementation", "More funding", "New technologies", "Local approval"], a: 0, cat: "Listening" }
+                    { audio: "Geologists hypothesize the tectonic shift occurred earlier than assumed.", q: "What is the new hypothesis?", opts: ["Happens soon", "Occurred later", "Occurred earlier than assumed", "Continuous"], a: 2, cat: "Listening" },
+                    { audio: "Permafrost melting threatens to release vast quantities of methane.", q: "What is the primary concern?", opts: ["Loss of habitat", "Flooding", "Release of methane", "Decreased fertility"], a: 2, cat: "Listening" },
+                    { audio: "Ocean acidification, driven by excess carbon dioxide, threatens corals.", q: "What drives ocean acidification?", opts: ["Chemical spills", "Excess carbon dioxide", "Rising temperatures", "Overfishing"], a: 1, cat: "Listening" },
+                    { audio: "Conservation must prioritize keystone species to avoid ecosystem collapse.", q: "Why prioritize keystone species?", opts: ["Most beautiful", "Easiest to breed", "Removal causes collapse", "Endangered"], a: 2, cat: "Listening" }
                  ]
             }
         };
@@ -553,7 +436,7 @@
             nickname: "",
             currentPartIndex: 0,
             questionIndexInPart: 0,
-            currentLevelIndex: 1, // Start A2
+            currentLevelIndex: 1,
             totalScore: 0,
             timerInterval: null,
             timeRemaining: 0,
@@ -564,44 +447,69 @@
                 "Listening": { correct: 0, total: 0 }
             },
             usedQuestions: { 1: [], 2: [], 3: [] },
-            currentQuestion: null
+            currentQuestion: null,
+            testEnded: false
         };
 
         let synth = window.speechSynthesis;
 
-        function showModal(msg) {
+        // Secure Custom Modal Replacement for alert()/confirm()
+        function showModal(msg, isConfirm = false, onConfirm = null) {
             const modal = document.createElement('div');
             modal.className = "fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm";
+            
+            let buttonsHtml = '';
+            if(isConfirm) {
+                buttonsHtml = `
+                    <div class="flex gap-3 justify-center mt-6">
+                        <button id="modal-confirm" class="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-500 transition shadow-md w-full">ยืนยันจบ (Confirm)</button>
+                        <button id="modal-cancel" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition shadow-md w-full">ยกเลิก (Cancel)</button>
+                    </div>
+                `;
+            } else {
+                buttonsHtml = `<button id="modal-ok" class="bg-[#FFCC00] text-black font-bold py-2 px-8 rounded-lg hover:bg-yellow-500 transition shadow-md mt-6">ตกลง (OK)</button>`;
+            }
+
             modal.innerHTML = `
-                <div class="bg-gray-900 border-2 border-[#FFCC00] rounded-lg p-6 max-w-sm w-full text-center shadow-[0_0_20px_rgba(255,204,0,0.3)]">
-                    <i class="fas fa-exclamation-circle text-4xl text-[#FFCC00] mb-4"></i>
-                    <p class="text-white text-lg mb-6">${msg}</p>
-                    <button class="bg-[#FFCC00] text-black font-bold py-2 px-8 rounded hover:bg-yellow-500 transition" onclick="this.parentElement.parentElement.remove()">ตกลง</button>
+                <div class="bg-gray-900 border border-gray-700 rounded-xl p-6 max-w-sm w-full text-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                    <i class="${isConfirm ? 'fas fa-exclamation-triangle text-red-500' : 'fas fa-info-circle text-[#FFCC00]'} text-4xl mb-4"></i>
+                    <p class="text-white text-sm md:text-base leading-relaxed">${msg}</p>
+                    ${buttonsHtml}
                 </div>
             `;
             document.body.appendChild(modal);
+
+            if(isConfirm) {
+                document.getElementById('modal-confirm').onclick = () => { modal.remove(); if(onConfirm) onConfirm(); };
+                document.getElementById('modal-cancel').onclick = () => { modal.remove(); };
+            } else {
+                document.getElementById('modal-ok').onclick = () => { modal.remove(); };
+            }
         }
 
+        // Leaderboard Logic
         async function showHistory() {
             document.getElementById('screen-welcome').classList.add('hidden');
             document.getElementById('screen-history').classList.remove('hidden');
             document.getElementById('screen-history').classList.add('flex');
             
             const tbody = document.getElementById('history-tbody');
-            tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-[#FFCC00]"><div class="spinner mx-auto mb-4"></div>กำลังโหลดข้อมูล...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-[#FFCC00]"><div class="spinner mx-auto mb-3"></div>กำลังโหลดข้อมูล...</td></tr>';
             
             if (typeof window.fetchHistoryFromDb === 'function') {
                 const history = await window.fetchHistoryFromDb();
-                renderHistoryTable(history);
+                if (history === null) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-red-400">Database connection error. Run on supported platform.</td></tr>';
+                } else {
+                    renderHistoryTable(history);
+                }
             } else {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500">ไม่สามารถเชื่อมต่อฐานข้อมูลได้</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-red-400">Firebase module not loaded.</td></tr>';
             }
         }
 
         function showHistoryFromResult() {
             document.getElementById('screen-result').classList.add('hidden');
-            document.getElementById('screen-history').classList.remove('hidden');
-            document.getElementById('screen-history').classList.add('flex');
             showHistory(); 
         }
 
@@ -615,15 +523,14 @@
             const tbody = document.getElementById('history-tbody');
             tbody.innerHTML = '';
             
-            if (history.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-500">ยังไม่มีข้อมูลผู้เล่นในระบบ</td></tr>';
+            if (!history || history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-400">ยังไม่มีข้อมูลผู้เล่นในระบบ<br>ทำข้อสอบและกดบันทึกคะแนนเป็นคนแรกเลย!</td></tr>';
                 return;
             }
 
             history.forEach((entry, index) => {
                 const dateObj = new Date(entry.timestamp);
-                const dateStr = dateObj.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
-                const timeStr = dateObj.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = dateObj.toLocaleDateString('th-TH', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' });
                 
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-gray-800 transition duration-150 border-b border-gray-800 last:border-0";
@@ -634,12 +541,17 @@
                 if(entry.level === "B1") badgeClass = "bg-purple-900/50 text-purple-400 border-purple-700";
                 if(entry.level === "B2" || entry.level === "C1") badgeClass = "bg-red-900/50 text-red-400 border-red-700";
 
+                let crown = "";
+                if(index === 0) crown = '<i class="fas fa-crown text-[#FFCC00] mr-2 drop-shadow-md"></i>';
+                else if(index === 1) crown = '<i class="fas fa-medal text-gray-400 mr-2"></i>';
+                else if(index === 2) crown = '<i class="fas fa-medal text-orange-400 mr-2"></i>';
+
                 tr.innerHTML = `
-                    <td class="p-4 font-medium text-white">${index === 0 ? '<i class="fas fa-crown text-[#FFCC00] mr-2"></i>' : ''}${entry.nickname}</td>
-                    <td class="p-4 text-gray-400 text-xs sm:text-sm">${dateStr} <br class="sm:hidden"/>${timeStr} น.</td>
-                    <td class="p-4 text-center font-bold text-[#FFCC00]">${entry.score}</td>
-                    <td class="p-4 text-center">
-                        <span class="px-2 py-1 rounded text-xs font-bold border ${badgeClass}">${entry.level}</span>
+                    <td class="p-3 md:p-4 font-medium text-white text-xs md:text-sm">${crown}${entry.nickname}</td>
+                    <td class="p-3 md:p-4 text-gray-400 text-[10px] md:text-xs hidden sm:table-cell">${dateStr}</td>
+                    <td class="p-3 md:p-4 text-center font-bold text-[#FFCC00] text-sm md:text-base">${entry.score}</td>
+                    <td class="p-3 md:p-4 text-center">
+                        <span class="px-2 py-1 rounded text-[10px] md:text-xs font-bold border ${badgeClass}">${entry.level}</span>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -648,10 +560,7 @@
 
         function startTestFlow() {
             const nickInput = document.getElementById('nickname').value.trim();
-            if(!nickInput) {
-                showModal('กรุณากรอกชื่อเล่นของคุณก่อนเริ่มทำแบบทดสอบ');
-                return;
-            }
+            if(!nickInput) { showModal('กรุณากรอกชื่อเล่นของคุณก่อนเริ่มทำแบบทดสอบ'); return; }
             state.nickname = nickInput;
             document.getElementById('screen-welcome').classList.add('hidden');
             document.getElementById('global-timer-container').classList.remove('hidden');
@@ -659,7 +568,7 @@
         }
 
         function prepareNextPart() {
-            if (state.currentPartIndex >= PARTS.length) {
+            if (state.currentPartIndex >= PARTS.length || state.testEnded) {
                 endTest();
                 return;
             }
@@ -694,11 +603,8 @@
             updateTimerDisplay();
 
             const timerDisp = document.getElementById('timer-display');
-            if (state.timeRemaining <= 60) {
-                timerDisp.classList.add('timer-warning');
-            } else {
-                timerDisp.classList.remove('timer-warning');
-            }
+            if (state.timeRemaining <= 60) timerDisp.classList.add('timer-warning');
+            else timerDisp.classList.remove('timer-warning');
 
             if (state.timeRemaining <= 0) {
                 clearInterval(state.timerInterval);
@@ -723,23 +629,21 @@
             utterance.rate = 0.9; 
             
             const btn = document.getElementById('btn-play-audio');
-            
             utterance.onstart = () => {
-                btn.classList.add('pulse-audio', 'bg-yellow-300', 'text-black');
+                btn.classList.add('bg-yellow-300', 'text-black');
                 btn.innerHTML = `<i class="fas fa-volume-up mr-2"></i> กำลังเล่นเสียง...`;
             };
-            
             utterance.onend = () => {
-                btn.classList.remove('pulse-audio', 'bg-yellow-300');
-                btn.innerHTML = `<i class="fas fa-play mr-2"></i> เล่นเสียงอีกครั้ง (Play Again)`;
+                btn.classList.remove('bg-yellow-300');
+                btn.innerHTML = `<i class="fas fa-play mr-2"></i> เล่นอีกครั้ง`;
             };
-
             synth.speak(utterance);
         }
 
         function loadNextQuestion() {
+            if(state.testEnded) return;
+
             const part = PARTS[state.currentPartIndex];
-            
             if (state.questionIndexInPart >= part.total) {
                 clearInterval(state.timerInterval);
                 synth.cancel();
@@ -750,40 +654,26 @@
 
             let currentLevel = LEVELS[state.currentLevelIndex];
             const partId = part.id;
-            let pool = db[partId][currentLevel];
+            let pool = dbQuestions[partId][currentLevel];
 
             let availableQs = pool.filter((_, idx) => !state.usedQuestions[partId].includes(`${currentLevel}-${idx}`));
             
-            // FALLBACK MECHANISM: If current level is empty, try adjacent levels
+            // Fallback if level questions are exhausted
             if (availableQs.length === 0) {
-                const searchOrder = [
-                    [1, 2, 3], // from A1 (0) try A2, B1, B2
-                    [0, 2, 3], // from A2 (1) try A1, B1, B2
-                    [3, 1, 0], // from B1 (2) try B2, A2, A1
-                    [2, 1, 0]  // from B2 (3) try B1, A2, A1
-                ][state.currentLevelIndex];
-
+                const searchOrder = [[1,2,3], [0,2,3], [3,1,0], [2,1,0]][state.currentLevelIndex];
                 let found = false;
                 for (let fallbackIdx of searchOrder) {
                     let fallbackLevel = LEVELS[fallbackIdx];
-                    let fallbackPool = db[partId][fallbackLevel];
+                    let fallbackPool = dbQuestions[partId][fallbackLevel];
                     let fallbackAvailable = fallbackPool.filter((_, idx) => !state.usedQuestions[partId].includes(`${fallbackLevel}-${idx}`));
                     
                     if (fallbackAvailable.length > 0) {
-                        state.currentLevelIndex = fallbackIdx; // Update state to match new fallback level
-                        currentLevel = fallbackLevel;
-                        pool = fallbackPool;
-                        availableQs = fallbackAvailable;
-                        found = true;
-                        break;
+                        state.currentLevelIndex = fallbackIdx; 
+                        currentLevel = fallbackLevel; pool = fallbackPool; availableQs = fallbackAvailable;
+                        found = true; break;
                     }
                 }
-
-                // Failsafe: If ALL levels are somehow exhausted, reset the used questions history for this part
-                if (!found) {
-                    state.usedQuestions[partId] = [];
-                    availableQs = pool;
-                }
+                if (!found) { state.usedQuestions[partId] = []; availableQs = pool; }
             }
 
             const randomQ = availableQs[Math.floor(Math.random() * availableQs.length)];
@@ -796,70 +686,52 @@
         }
 
         function renderQuestion() {
-            try {
-                const qData = state.currentQuestion;
-                const part = PARTS[state.currentPartIndex];
-                const currentLevel = LEVELS[state.currentLevelIndex];
+            const qData = state.currentQuestion;
+            const part = PARTS[state.currentPartIndex];
+            const currentLevel = LEVELS[state.currentLevelIndex];
 
-                if (!qData || !qData.opts || !Array.isArray(qData.opts)) {
-                    console.error("CRITICAL ERROR: Question data is missing or corrupted.", qData);
-                    // Silently skip to the next question if data is somehow still corrupted
-                    state.questionIndexInPart++; 
-                    setTimeout(loadNextQuestion, 100);
-                    return;
-                }
+            document.getElementById('q-num').innerText = state.questionIndexInPart + 1;
+            document.getElementById('q-total').innerText = part.total;
+            document.getElementById('part-indicator').innerText = `Part ${part.id}`;
+            
+            const levelBadge = document.getElementById('level-badge');
+            levelBadge.className = `px-2 py-1 rounded text-[10px] font-bold tracking-widest border ${LEVEL_COLORS[currentLevel]}`;
+            levelBadge.innerText = `Lvl ${currentLevel}`;
+            document.getElementById('points-indicator').innerText = `+${POINTS[currentLevel]} Pts`;
 
-                document.getElementById('q-num').innerText = state.questionIndexInPart + 1;
-                document.getElementById('q-total').innerText = part.total;
-                document.getElementById('part-indicator').innerText = `Part ${part.id}: ${part.category}`;
-                
-                const levelBadge = document.getElementById('level-badge');
-                levelBadge.className = `px-3 py-1 rounded text-sm font-bold tracking-widest border ${LEVEL_COLORS[currentLevel]}`;
-                levelBadge.innerText = `Level ${currentLevel}`;
-                
-                document.getElementById('points-indicator').innerText = `+${POINTS[currentLevel]} Points`;
+            const qText = document.getElementById('question-text');
+            const audioUi = document.getElementById('audio-ui');
+            const optsContainer = document.getElementById('options-container');
+            
+            audioUi.classList.add('hidden');
+            optsContainer.innerHTML = '';
+            synth.cancel();
 
-                const qText = document.getElementById('question-text');
-                const audioUi = document.getElementById('audio-ui');
-                const optsContainer = document.getElementById('options-container');
-                
-                audioUi.classList.add('hidden');
-                optsContainer.innerHTML = '';
-                synth.cancel();
-
-                if (part.id === 3) {
-                    audioUi.classList.remove('hidden');
-                    document.getElementById('btn-play-audio').innerHTML = `<i class="fas fa-play mr-2"></i> เล่นเสียง (Play Audio)`;
-                    qText.innerText = qData.q;
-                } else if (part.id === 2) {
-                    qText.innerHTML = qData.q.replace('\n', '<br><span class="block mt-2 text-[#FFCC00]"></span>');
-                } else {
-                    qText.innerText = qData.q;
-                }
-
-                // Render choices correctly
-                qData.opts.forEach((optText, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full text-left bg-black/50 border border-gray-700 hover:border-[#FFCC00] p-4 rounded text-white btn-option flex items-center shadow-lg group";
-                    
-                    const letter = String.fromCharCode(65 + idx);
-                    btn.innerHTML = `
-                        <span class="inline-flex items-center justify-center min-w-[2rem] w-8 h-8 rounded bg-gray-800 text-[#FFCC00] font-bold mr-4 border border-gray-600 group-hover:bg-[#FFCC00] group-hover:text-black transition-colors">${letter}</span> 
-                        <span class="font-medium text-gray-200 group-hover:text-white">${optText}</span>
-                    `;
-                    
-                    btn.onclick = () => handleAnswer(idx);
-                    optsContainer.appendChild(btn);
-                });
-            } catch (err) {
-                console.error("Error rendering question:", err);
-                showModal("พบปัญหาในการโหลดข้อสอบระบบจะข้ามไปยังข้อถัดไป");
-                state.questionIndexInPart++; 
-                loadNextQuestion();
+            if (part.id === 3) {
+                audioUi.classList.remove('hidden');
+                document.getElementById('btn-play-audio').innerHTML = `<i class="fas fa-play mr-2"></i> เล่นเสียง (Audio)`;
+                qText.innerText = qData.q;
+            } else if (part.id === 2) {
+                qText.innerHTML = qData.q.replace('\n', '<br><span class="block mt-2 text-[#FFCC00]"></span>');
+            } else {
+                qText.innerText = qData.q;
             }
+
+            qData.opts.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-gray-900/60 border border-gray-700 hover:border-[#FFCC00] p-4 rounded-lg text-white btn-option flex items-center shadow-md group";
+                const letter = String.fromCharCode(65 + idx);
+                btn.innerHTML = `
+                    <span class="inline-flex items-center justify-center min-w-[2rem] w-8 h-8 rounded bg-gray-800 text-[#FFCC00] font-bold mr-4 border border-gray-600 group-hover:bg-[#FFCC00] group-hover:text-black transition-colors">${letter}</span> 
+                    <span class="font-medium text-gray-300 group-hover:text-white text-sm md:text-base">${optText}</span>
+                `;
+                btn.onclick = () => handleAnswer(idx);
+                optsContainer.appendChild(btn);
+            });
         }
 
         function handleAnswer(selectedIndex) {
+            if(state.testEnded) return;
             const qData = state.currentQuestion;
             const isCorrect = (selectedIndex === qData.a);
             const currentLevel = LEVELS[state.currentLevelIndex];
@@ -878,9 +750,22 @@
             loadNextQuestion();
         }
 
+        function promptForceEndTest() {
+            showModal(
+                "คุณต้องการจบการทดสอบและบันทึกคะแนนตอนนี้เลยหรือไม่?<br><span class='text-[10px] text-gray-400 mt-2 block'>*คะแนนจะถูกคำนวณและบันทึกลง Leaderboard ตามข้อที่คุณตอบไปแล้ว</span>", 
+                true, 
+                () => {
+                    state.testEnded = true;
+                    endTest();
+                }
+            );
+        }
+
         async function endTest() {
+            state.testEnded = true;
             clearInterval(state.timerInterval);
             synth.cancel();
+            
             document.getElementById('global-timer-container').classList.add('hidden');
             document.getElementById('screen-quiz').classList.add('hidden');
             document.getElementById('screen-transition').classList.add('hidden');
@@ -892,76 +777,39 @@
             document.getElementById('final-score').innerText = state.totalScore;
 
             let cefr = "A1";
-            let desc = "Beginner (ผู้เริ่มต้น)";
-            if (state.totalScore >= 125) {
-                cefr = "C1";
-                desc = "Advanced (ระดับสูง)";
-            } else if (state.totalScore >= 100) {
-                cefr = "B2";
-                desc = "Upper Intermediate (ระดับกลางค่อนข้างสูง)";
-            } else if (state.totalScore >= 65) {
-                cefr = "B1";
-                desc = "Intermediate (ระดับกลาง)";
-            } else if (state.totalScore >= 35) {
-                cefr = "A2";
-                desc = "Elementary (ระดับพื้นฐาน)";
-            }
+            let desc = "Beginner";
+            if (state.totalScore >= 80) { cefr = "C1"; desc = "Advanced"; }
+            else if (state.totalScore >= 50) { cefr = "B2"; desc = "Upper Int."; }
+            else if (state.totalScore >= 25) { cefr = "B1"; desc = "Intermediate"; }
+            else if (state.totalScore >= 10) { cefr = "A2"; desc = "Elementary"; }
 
             document.getElementById('final-cefr').innerText = cefr;
             document.getElementById('cefr-desc').innerText = desc;
 
-            // Save to Firebase DB securely
-            if (typeof window.saveResultToDb === 'function') {
-                await window.saveResultToDb(state.nickname, state.totalScore, cefr);
+            // Save to Firebase Leaderboard immediately
+            if (typeof window.saveResultToDb === 'function' && state.totalScore > 0) {
+                const saved = await window.saveResultToDb(state.nickname, state.totalScore, cefr);
+                if (!saved) {
+                    showModal("ไม่สามารถเชื่อมต่อฐานข้อมูลได้ คะแนนของคุณยังไม่ถูกบันทึก");
+                }
             }
 
             const breakdownContainer = document.getElementById('skills-breakdown');
-            let weakestSkill = "";
-            let lowestPct = 100;
-
+            breakdownContainer.innerHTML = '';
+            
             for (const [skill, data] of Object.entries(state.stats)) {
                 let pct = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
-                if (data.total > 0 && pct < lowestPct) {
-                    lowestPct = pct;
-                    weakestSkill = skill;
-                }
-
                 breakdownContainer.innerHTML += `
-                    <div class="bg-gray-800 p-4 rounded border border-gray-700">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-white font-bold">${skill}</span>
-                            <span class="text-[#FFCC00] text-sm">${data.correct} / ${data.total}</span>
+                    <div class="bg-gray-800 p-3 rounded-lg border border-gray-700">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-white font-bold text-xs">${skill}</span>
+                            <span class="text-[#FFCC00] text-xs">${data.correct} / ${data.total}</span>
                         </div>
-                        <div class="w-full bg-black rounded-full h-2">
-                            <div class="bg-[#FFCC00] h-2 rounded-full" style="width: ${pct}%"></div>
+                        <div class="w-full bg-black rounded-full h-1.5">
+                            <div class="bg-[#FFCC00] h-1.5 rounded-full" style="width: ${pct}%"></div>
                         </div>
                     </div>
                 `;
-            }
-
-            const recEl = document.getElementById('recommendation-text');
-            if (lowestPct >= 80) {
-                recEl.innerText = "ยอดเยี่ยมมาก! ทักษะภาษาอังกฤษของคุณมีความสมดุลและอยู่ในระดับที่ดีเยี่ยม แนะนำให้คุณฝึกฝนต่อไปโดยการอ่านบทความสารคดีของ National Geographic หรือดูสารคดีภาษาอังกฤษเพื่อพัฒนาคำศัพท์ระดับสูง";
-            } else {
-                let advice = `จากผลคะแนน คุณควรเน้นพัฒนาทักษะด้าน <strong>${weakestSkill}</strong> เป็นพิเศษ:<br><br>`;
-                switch(weakestSkill) {
-                    case "Grammar":
-                        advice += "- ทบทวนโครงสร้างประโยคพื้นฐาน การใช้ Tenses, และคำเชื่อมต่างๆ<br>- ลองฝึกแต่งประโยคอธิบายปรากฏการณ์ธรรมชาติง่ายๆ";
-                        break;
-                    case "Vocabulary":
-                        advice += "- เพิ่มพูนคำศัพท์หมวดสิ่งแวดล้อม วิทยาศาสตร์ และภูมิศาสตร์<br>- แนะนำให้อ่านข่าวหรือบทความสั้นๆ แล้วจดคำศัพท์ที่ไม่รู้ความหมายไว้ทบทวน";
-                        break;
-                    case "Conversation":
-                        advice += "- สังเกตวิธีการใช้ภาษาในบทสนทนา เช่น การตอบรับ การเสนอแนะ หรือการแสดงความเห็น<br>- ลองเปิด Subtitle ภาษาอังกฤษเวลาดูซีรีส์เพื่อศึกษาบริบทการคุย";
-                        break;
-                    case "Listening":
-                        advice += "- ฝึกฟังบ่อยๆ เพื่อให้คุ้นเคยกับสำเนียงและการเชื่อมคำ (Linking words)<br>- ลองฟัง Podcast หรือวิดีโอสารคดีสั้นๆ แล้วพยายามสรุปใจความสำคัญ";
-                        break;
-                    default:
-                        advice += "- ฝึกฝนภาพรวมทั้งการอ่าน ฟัง พูด เขียน บ่อยๆ";
-                        break;
-                }
-                recEl.innerHTML = advice;
             }
         }
     </script>
